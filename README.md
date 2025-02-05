@@ -6,8 +6,8 @@ in Golang stdlib (backend) and React/Next.js (frontend).
 # Why?
 
 The goal of this project is to provide a simple (KISS) but complete
-implementation of an online store to showcase my programming style
-with Go (stdlib) and JS (React) to my future employers.
+implementation of an online store webapp to showcase my programming style
+in Go (stdlib) and JS (React) to my future employers.
 
 I'll try to keep the code both clean and simple, for the reviewers
 of the source code, as well as for developers who'd want to bootstrap
