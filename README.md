@@ -1,7 +1,7 @@
 # Online Store App
 
-Simple implementation of a basic online store app,
-implemented in Golang stdlib (backend) and React/Next.js (frontend).
+Simple implementation of a basic online store app
+in Golang stdlib (backend) and React/Next.js (frontend).
 
 # Why?
 
