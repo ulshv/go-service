@@ -10,14 +10,15 @@ implementation of an online store to showcase my programming style
 with Go (stdlib) and JS (React) to my future employers.
 
 I'll try to keep the code both clean and simple, for the reviewers
-of the source, as well as for developers who'd like to bootstrap
-their online store based on this implementation.
+of the source code, as well as for developers who'd want to bootstrap
+their online store app based on this implementation.
 
 # Tech stack
 - Go (stdlib)
 - TypeScript
 - React/Next.js
 - Postgres
+
 (Potentially):
 - Redis
 - RabbitMQ
