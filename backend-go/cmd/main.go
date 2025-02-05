@@ -3,11 +3,11 @@ package main
 import (
 	"log/slog"
 
-	"github.com/ulshv/go-web-app/internal/server"
+	"github.com/ulshv/online-store-app/backend-go/server"
 )
 
 func main() {
-	slog.Info("Starting go-web-app...")
+	slog.Info("Starting the server...")
 
 	s := server.NewServer(server.NewServerOptions{
 		Address: "localhost",
