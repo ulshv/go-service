@@ -3,8 +3,8 @@ package auth
 import "github.com/ulshv/online-store-app/backend-go/internal/modules/user"
 
 type AuthModule struct {
-	AuthService    *AuthService
-	AuthController *AuthController
+	authService    *authService
+	AuthController *authController
 }
 
 func NewAuthModule(
@@ -14,7 +14,7 @@ func NewAuthModule(
 	controller := newAuthController(service)
 
 	return &AuthModule{
-		AuthService:    service,
+		authService:    service,
 		AuthController: controller,
 	}
 }

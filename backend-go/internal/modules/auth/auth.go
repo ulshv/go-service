@@ -5,15 +5,21 @@ import (
 )
 
 var (
-	ErrInvalidEmailOrPassword = errors.New("invalid email or password")
+	errEmailTaken             = errors.New("email is already taken")
+	errInvalidEmailOrPassword = errors.New("invalid email or password")
 )
 
-type loginDto struct {
+type registerDto struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
 }
 
-type registerDto struct {
+type registerResultDto struct {
+	UserId int    `json:"user_id"`
+	Token  string `json:"token"`
+}
+
+type loginDto struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
 }

@@ -15,7 +15,7 @@ func (us *UserService) GetUserById(id int) (*User, error) {
 }
 
 func (us *UserService) FindUserByEmail(username string) (*User, error) {
-	return us.userRepository.findUserByName(username)
+	return us.userRepository.findUserByEmail(username)
 }
 
 func (us *UserService) CreateUser(user User) (*User, error) {

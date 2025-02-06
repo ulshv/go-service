@@ -10,8 +10,8 @@ var (
 )
 
 type User struct {
-	Id       int    `json:"id"`
-	Email    string `json:"username"`
-	Name     string `json:"name"`
-	Password string
+	Id           int    `json:"id"`
+	Email        string `json:"username"`
+	Name         string `json:"name"`
+	PasswordHash string
 }

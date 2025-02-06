@@ -25,7 +25,7 @@ func (r *userRepository) getUserById(id int) (*User, error) {
 	return user, nil
 }
 
-func (r *userRepository) findUserByName(username string) (*User, error) {
+func (r *userRepository) findUserByEmail(username string) (*User, error) {
 	r.lock.RLock()
 	defer r.lock.RUnlock()
 	for _, user := range r.users {
@@ -37,16 +37,16 @@ func (r *userRepository) findUserByName(username string) (*User, error) {
 }
 
 func (r *userRepository) createUser(user User) (*User, error) {
-	r.lock.Lock()
-	defer r.lock.Unlock()
-	existingUser, err := r.findUserByName(user.Email)
+	existingUser, err := r.findUserByEmail(user.Email)
 	if err == nil {
 		return nil, err
 	}
 	if existingUser != nil {
 		return nil, ErrUserExists
 	}
+	r.lock.Lock()
+	defer r.lock.Unlock()
 	user.Id = len(r.users) + 1
 	r.users[user.Id] = &user
-	return existingUser, nil
+	return &user, nil
 }

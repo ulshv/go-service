@@ -1,51 +1,48 @@
 package auth
 
 import (
-	"fmt"
+	"log/slog"
 
 	"github.com/ulshv/online-store-app/backend-go/internal/modules/user"
 )
 
-type AuthService struct {
+type authService struct {
 	userService *user.UserService
 }
 
 func newAuthService(
 	userService *user.UserService,
-) *AuthService {
-	return &AuthService{
+) *authService {
+	return &authService{
 		userService: userService,
 	}
 }
 
-func (s *AuthService) Login(email, password string) (string, error) {
+func (s *authService) register(email, password string) (*registerResultDto, error) {
+	slog.Info("register")
+	payload := user.User{
+		Email:        email,
+		PasswordHash: hashPassword(password),
+	}
+	slog.Info("CreateUser")
+	user, err := s.userService.CreateUser(payload)
+	if err != nil {
+		return nil, err
+	}
+	slog.Info("CreatedUser successfully")
+	return &registerResultDto{
+		UserId: user.Id,
+		Token:  generateToken(user.Id),
+	}, nil
+}
+
+func (s *authService) login(email, password string) (string, error) {
 	user, err := s.userService.FindUserByEmail(email)
 	if err != nil {
 		return "", err
 	}
-	// TODO hash password
-	if user.Password != password {
-		return "", ErrInvalidEmailOrPassword
+	if validatePassword(password, user.PasswordHash) {
+		return "", errInvalidEmailOrPassword
 	}
-	// TODO generate token
-	return fmt.Sprintf("token-%v", user.Id), nil
-}
-
-func (s *AuthService) Register(email, password string) (string, error) {
-	// TODO hash password
-	user := user.User{
-		Email:    email,
-		Password: password,
-	}
-	_, err := s.userService.CreateUser(user)
-	if err != nil {
-		return "", err
-	}
-	// TODO generate token
-	return fmt.Sprintf("token-%v", user.Id), nil
-}
-
-func (s *AuthService) Logout(token string) error {
-	// TODO invalidate token
-	return nil
+	return generateToken(user.Id), nil
 }
