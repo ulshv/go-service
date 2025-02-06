@@ -15,8 +15,7 @@ their online store app based on this implementation.
 
 # Tech stack
 - Go (stdlib)
-- TypeScript
-- React/Next.js
+- TypeScript/React/Next.js
 - Postgres
 
 (Potentially):

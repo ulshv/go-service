@@ -1,18 +1,22 @@
 package main
 
 import (
+	"log"
 	"log/slog"
 
-	"github.com/ulshv/online-store-app/backend-go/server"
+	"github.com/ulshv/online-store-app/backend-go/internal/application"
+	"github.com/ulshv/online-store-app/backend-go/internal/server"
 )
 
 func main() {
-	slog.Info("Starting the server...")
+	slog.Info("Initializing the application")
 
-	s := server.NewServer(server.NewServerOptions{
-		Address: "localhost",
-		Port:    "5000",
-	})
+	app := application.NewApp()
+	srv := server.NewServer("0.0.0.0", "5000", app)
 
-	s.Listen()
+	slog.Info("Starting the listener", "address", srv.Addr)
+
+	if err := srv.ListenAndServe(); err != nil {
+		log.Fatal(err)
+	}
 }
