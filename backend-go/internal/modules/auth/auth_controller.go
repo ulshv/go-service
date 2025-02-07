@@ -4,15 +4,20 @@ import (
 	"log/slog"
 	"net/http"
 
+	"github.com/ulshv/online-store-app/backend-go/internal/logger"
 	"github.com/ulshv/online-store-app/backend-go/internal/utils/httputils"
 )
 
 type authController struct {
 	authService *authService
+	logger      *slog.Logger
 }
 
 func newAuthController(authService *authService) *authController {
-	return &authController{authService: authService}
+	return &authController{
+		authService: authService,
+		logger:      logger.NewLogger("AuthController"),
+	}
 }
 
 func (c *authController) RegisterRoutes(mux *http.ServeMux) {
@@ -21,20 +26,21 @@ func (c *authController) RegisterRoutes(mux *http.ServeMux) {
 }
 
 func (c *authController) registerHandler(w http.ResponseWriter, r *http.Request) {
-	slog.Info("registerHandler")
+	c.logger.Info("registerHandler")
 	var registerDto registerDto
 	err := httputils.DecodeBody(w, r, &registerDto)
 	if err != nil {
 		return
 	}
-	slog.Info("registerHandler, parsed DTO", "registerDto", registerDto)
+	c.logger.Debug("registerHandler, parsed DTO", "email", registerDto.Email)
 	result, err := c.authService.register(registerDto.Email, registerDto.Password)
+	c.logger.Debug("after register", "result", result, "err", err)
 	if err != nil {
-		slog.Info("registerHandler, error", "error", err)
+		slog.Debug("received err, writing to client", "err", "err")
 		httputils.WriteErrorJson(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	slog.Info("registerHandler, result", "result", result)
+	c.logger.Debug("after register", "result", result)
 	httputils.WriteJson(w, result)
 }
 

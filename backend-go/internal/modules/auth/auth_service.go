@@ -3,11 +3,13 @@ package auth
 import (
 	"log/slog"
 
+	"github.com/ulshv/online-store-app/backend-go/internal/logger"
 	"github.com/ulshv/online-store-app/backend-go/internal/modules/user"
 )
 
 type authService struct {
 	userService *user.UserService
+	logger      *slog.Logger
 }
 
 func newAuthService(
@@ -15,33 +17,39 @@ func newAuthService(
 ) *authService {
 	return &authService{
 		userService: userService,
+		logger:      logger.NewLogger("AuthService"),
 	}
 }
 
 func (s *authService) register(email, password string) (*registerResultDto, error) {
-	slog.Info("register")
+	s.logger.Info("register", "email", email)
 	payload := user.User{
 		Email:        email,
 		PasswordHash: hashPassword(password),
 	}
-	slog.Info("CreateUser")
+	s.logger.Debug("register - created payload, now trying to create user", "payload", payload)
 	user, err := s.userService.CreateUser(payload)
+	s.logger.Debug("register - CreateUser result", "user", user, "err", err)
 	if err != nil {
 		return nil, err
 	}
-	slog.Info("CreatedUser successfully")
+	s.logger.Debug("register - now generate toekn")
+	token := generateToken(user.Id)
+	s.logger.Debug("register - generated token")
 	return &registerResultDto{
 		UserId: user.Id,
-		Token:  generateToken(user.Id),
+		Token:  token,
 	}, nil
 }
 
 func (s *authService) login(email, password string) (string, error) {
+	s.logger.Info("login", "email", email)
 	user, err := s.userService.FindUserByEmail(email)
 	if err != nil {
 		return "", err
 	}
-	if validatePassword(password, user.PasswordHash) {
+	if !validatePassword(password, user.PasswordHash) {
+		s.logger.Debug("login - invalid email or password")
 		return "", errInvalidEmailOrPassword
 	}
 	return generateToken(user.Id), nil
