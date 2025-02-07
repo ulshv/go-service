@@ -1,6 +1,7 @@
 # Backend-Go
 
 - [x] Доработать базовые тесты для /auth/register
+- [ ] Реорганизовать структуру проекта,
 - [ ] Перейти на SQLite БД в модуле user и написать несколько CRUD-операциий в репозитории
 - [ ] Make /auth/register tests not to fail
 - [ ] Функционал /auth/login (+ тесты)
