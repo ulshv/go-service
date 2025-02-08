@@ -29,6 +29,13 @@ func (s *UserService) FindUserByEmail(username string) (*User, error) {
 	return s.userRepository.findUserByEmail(username)
 }
 
+func (s UserService) NewUser(email, passwordHash string) User {
+	return User{
+		Email:        email,
+		PasswordHash: passwordHash,
+	}
+}
+
 func (s *UserService) CreateUser(user User) (*User, error) {
 	s.logger.Info("CreateUser", "email", user.Email)
 	u, err := s.userRepository.createUser(user)

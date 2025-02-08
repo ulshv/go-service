@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"testing"
 
 	"github.com/jmoiron/sqlx"
@@ -17,10 +18,12 @@ import (
 )
 
 func initDb() *sqlx.DB {
+	os.Remove("./test.db")
 	cfg := database.Config{
 		Type:   database.SQLite,
-		DBName: ":memory:",
+		DBName: "./test.db",
 	}
+
 	db, err := database.NewConnection(cfg)
 	if err != nil {
 		panic(err)

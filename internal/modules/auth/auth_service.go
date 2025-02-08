@@ -23,10 +23,11 @@ func newAuthService(
 
 func (s *authService) register(email, password string) (*registerResultDto, error) {
 	s.logger.Info("register", "email", email)
-	payload := user.User{
-		Email:        email,
-		PasswordHash: hashPassword(password),
+	passwordHash, err := hashPassword(password)
+	if err != nil {
+		return nil, err
 	}
+	payload := s.userService.NewUser(email, passwordHash)
 	s.logger.Debug("register - created payload, now trying to create user", "payload", payload)
 	user, err := s.userService.CreateUser(payload)
 	s.logger.Debug("register - CreateUser result", "user", user, "err", err)
