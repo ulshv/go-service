@@ -28,6 +28,7 @@ return &App{
 Module init:
 ```go
 func NewAuthModule(
+  db *sqlx.DB,
   userModule *user.UserModule,
 ) *AuthModule {
   service := newAuthService(userModule.UserService)
