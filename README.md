@@ -1,25 +1,41 @@
-# Online Store App
+# `go-service` is:
 
-Simple implementation of a basic online store app
-in Golang stdlib (backend) and React/Next.js (frontend).
+- Modular backend service written in Golang (mostly `stdlib`, but with some deps for SQL DBs).
+- Includes User auth (register/login/authorization)
+- Some simple domain-specific functionality as an example (implementation of online store or a marketplace)
+- Can be started without external running deps (i.e. Postgres), SQLite can be used instead
+- Headless backend, no GUI (maybe will be added in the future for as a reference implementation)
+- [WIP] Full tests coverage (unit/e2e)
+- [TODO] OpenAPI / Swagger
 
-# Why?
+# Code examples
 
-The goal of this project is to provide a simple (KISS) but complete
-implementation of an online store webapp to showcase my programming style
-in Go (stdlib) and JS (React) to my future employers.
+App initialization:
+```go
 
-I'll try to keep the code both clean and simple, for the reviewers
-of the source code, as well as for developers who'd want to bootstrap
-their online store app based on this implementation.
+```
 
-# Tech stack
-- Go (stdlib)
-- TypeScript/React/Next.js
-- Postgres
+Handlers init (mux):
+```go
 
-(Potentially):
-- Redis
-- RabbitMQ
-- Kafka
-- ElasticSearch
+```
+
+Module init:
+```go
+
+```
+
+Module handlers init:
+```go
+
+```
+
+Service init:
+```go
+
+```
+
+Repository init:
+```go
+
+```
