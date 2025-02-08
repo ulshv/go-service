@@ -9,10 +9,17 @@
 - [x] Сделать GH репу публичной
 - [x] rename *controller to *handlers
 - [x] Add code examples in the readme
-- [ ] Функционал /auth/login (+ тесты)
-- [ ] Почистить проект и сделать код look prettier, возможно добавить побольше дебаг-логов
 - [ ] Реальная генерация User.PasswordHash
 - [ ] Реальная генерация auth.AuthToken
+  - [ ] БД таблица auth_tokens: `id, token (unique), user_id`
+- [ ] Add auth/me route for getting user info based on the AuthToken
+  - [ ] Context WithValue
+  - [ ] Middleware
+  - [ ] Context get value and check it with token in the DB
+- [ ] Функционал /auth/login (+ тесты)
 - [ ] Добавить роут где можно юзать сгенеренный auth token (типа `product/create`)
 - [ ] Тесты для модуля user
 - [ ] После завершения базового функционала модулей auth/user, Расписать архитектуру следующих модулей
+
+Later (someday):
+- [ ] Почистить проект и сделать код look prettier, возможно добавить побольше дебаг-логов
