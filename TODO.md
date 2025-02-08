@@ -23,3 +23,5 @@
 
 Later (someday):
 - [ ] Почистить проект и сделать код look prettier, возможно добавить побольше дебаг-логов
+- [ ] `LOG_LEVEL=debug` instead of `LOG_DEBUG=1`
+
