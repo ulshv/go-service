@@ -5,7 +5,6 @@ import (
 )
 
 var (
-	errEmailTaken             = errors.New("email is already taken")
 	errInvalidEmailOrPassword = errors.New("invalid email or password")
 )
 

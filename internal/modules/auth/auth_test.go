@@ -3,16 +3,35 @@ package auth
 import (
 	"bytes"
 	"encoding/json"
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 
+	"github.com/jmoiron/sqlx"
+	"github.com/ulshv/online-store-app/backend-go/internal/database"
+	"github.com/ulshv/online-store-app/backend-go/internal/database/migrations"
+	"github.com/ulshv/online-store-app/backend-go/internal/logger"
 	"github.com/ulshv/online-store-app/backend-go/internal/modules/user"
 	"github.com/ulshv/online-store-app/backend-go/internal/utils/testutils"
 )
 
+func initDb() *sqlx.DB {
+	cfg := database.Config{
+		Type:   database.SQLite,
+		DBName: ":memory:",
+	}
+	db, err := database.NewConnection(cfg)
+	if err != nil {
+		panic(err)
+	}
+	return db
+}
+
 func initModule() *AuthModule {
-	userModule := user.NewUserModule()
+	db := initDb()
+	migrations.RunMigrations(db, "migrations", logger.NewLogger("Migrations"), database.SQLite)
+	userModule := user.NewUserModule(db)
 	return NewAuthModule(userModule)
 }
 
@@ -47,7 +66,7 @@ func TestRegister(t *testing.T) {
 				Password: "password123",
 			},
 			wantStatus: http.StatusConflict,
-			wantError:  errEmailTaken.Error(),
+			wantError:  user.ErrEmailTaken.Error(),
 			wantResult: registerResultDto{},
 		},
 	}
@@ -62,18 +81,20 @@ func TestRegister(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
+			respBody, err := io.ReadAll(resp.Body)
+			if err != nil {
+				t.Fatal(err)
+			}
 			defer resp.Body.Close()
 			if resp.StatusCode != tt.wantStatus {
 				t.Errorf("got status %d, want %d", resp.StatusCode, tt.wantStatus)
 			}
-			if tt.wantError != "" {
-				apiErr := testutils.ErrorStringFromBody(body)
-				if apiErr != tt.wantError {
-					t.Errorf("got error %s, want %s", apiErr, tt.wantError)
-				}
+			apiErr := testutils.ErrorStringFromBody(respBody)
+			if apiErr != tt.wantError {
+				t.Errorf("got error %s, want %s", apiErr, tt.wantError)
 			}
 			result := registerResultDto{}
-			err = json.Unmarshal(body, &result)
+			err = json.Unmarshal(respBody, &result)
 			if err != nil {
 				t.Fatal(err)
 			}

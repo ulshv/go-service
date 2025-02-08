@@ -3,14 +3,23 @@ package httputils
 import (
 	"encoding/json"
 	"net/http"
+
+	logger_mod "github.com/ulshv/online-store-app/backend-go/internal/logger"
 )
 
 var (
 	errJsonDecode = "error while decoding json, make sure the data structure is correct"
+	logger        = logger_mod.NewLogger("httputils")
 )
 
 func WriteJson(w http.ResponseWriter, data any) {
-	jsonData, _ := json.Marshal(data)
+	jsonData, err := json.Marshal(data)
+	if err != nil {
+		msg := "error while encoding json response"
+		logger.Error(msg, "error", err)
+		WriteErrorJson(w, msg, http.StatusInternalServerError)
+		return
+	}
 	w.Write(jsonData)
 }
 

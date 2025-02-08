@@ -2,16 +2,18 @@ package user
 
 import (
 	"errors"
+	"time"
 )
 
 var (
 	ErrUserNotFound = errors.New("user not found")
-	ErrUserExists   = errors.New("user already exists")
+	ErrEmailTaken   = errors.New("email is already taken")
 )
 
 type User struct {
-	Id           int    `json:"id"`
-	Email        string `json:"username"`
-	Name         string `json:"name"`
-	PasswordHash string
+	Id           int       `db:"id"`
+	Email        string    `db:"email"`
+	PasswordHash string    `db:"password_hash"`
+	CreatedAt    time.Time `db:"created_at"`
+	UpdatedAt    time.Time `db:"updated_at"`
 }

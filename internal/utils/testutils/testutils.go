@@ -6,10 +6,17 @@ import (
 )
 
 func ErrorStringFromBody(body []byte) string {
-	var errJson map[string]string
+	var errJson map[string]any
 	err := json.Unmarshal(body, &errJson)
 	if err != nil {
-		log.Fatal(err) // it's safe since it's used only in tests
+		// it's safe since it's used only in tests
+		log.Fatal("ERROR [testutils]: ErrorStringFromBody err=", err)
 	}
-	return errJson["error"]
+	errVal := errJson["error"]
+	switch errVal := errVal.(type) {
+	case string:
+		return errVal
+	default:
+		return ""
+	}
 }

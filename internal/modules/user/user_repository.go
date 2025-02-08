@@ -2,67 +2,61 @@ package user
 
 import (
 	"log/slog"
-	"sync"
 
+	"github.com/jmoiron/sqlx"
 	"github.com/ulshv/online-store-app/backend-go/internal/logger"
 )
 
 type userRepository struct {
-	users map[int]*User
-
+	db     *sqlx.DB
 	logger *slog.Logger
-	lock   sync.RWMutex
 }
 
-func newUserRepository() *userRepository {
+func newUserRepository(db *sqlx.DB) *userRepository {
 	return &userRepository{
-		users:  make(map[int]*User),
+		db:     db,
 		logger: logger.NewLogger("UserRepository"),
-		lock:   sync.RWMutex{},
 	}
 }
 
 func (r *userRepository) getUserById(id int) (*User, error) {
-	r.lock.RLock()
-	defer r.lock.RUnlock()
-	user, ok := r.users[id]
-	if !ok {
+	var user User
+	err := r.db.Get(&user, "SELECT * FROM users WHERE id = $1", id)
+	if err != nil {
+		r.logger.Error("failed to get user by id", "error", err)
 		return nil, ErrUserNotFound
 	}
-	return user, nil
+	return &user, nil
 }
 
-func (r *userRepository) findUserByEmail(username string) (*User, error) {
-	r.logger.Debug("findUserByEmail - locking for read")
-	r.lock.RLock()
-	defer r.lock.RUnlock()
-	r.logger.Debug("findUserByEmail - locked for read")
-	for _, user := range r.users {
-		if user.Email == username {
-			r.logger.Debug("findUserByEmail - found user", "user", user)
-			return user, nil
-		}
+func (r *userRepository) findUserByEmail(email string) (*User, error) {
+	var user User
+	err := r.db.Get(&user, "SELECT * FROM users WHERE email = $1", email)
+	if err != nil {
+		r.logger.Debug("user not found by email", "email", email)
+		return nil, ErrUserNotFound
 	}
-	return nil, ErrUserNotFound
+	return &user, nil
 }
 
 func (r *userRepository) createUser(user User) (*User, error) {
-	r.logger.Info("createUser", "user", user)
-	r.logger.Debug("createUser - check if user exists", "email", user.Email)
-	existingUser, err := r.findUserByEmail(user.Email)
-	r.logger.Debug("createUser - checked user", "existingUser", existingUser, "err", err)
+	r.logger.Info("creating user", "email", user.Email)
+
+	query := `
+		INSERT INTO users (email, password_hash, created_at, updated_at)
+		VALUES ($1, $2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+		RETURNING id, email, password_hash, created_at, updated_at`
+
+	err := r.db.QueryRowx(
+		query,
+		user.Email,
+		user.PasswordHash,
+	).StructScan(&user)
+
 	if err != nil {
+		r.logger.Error("failed to create user", "error", err)
 		return nil, err
 	}
-	if existingUser != nil {
-		r.logger.Debug("createUser - user exists, returning ErrUserExists")
-		return nil, ErrUserExists
-	}
-	r.logger.Debug("createUser - locking before creating user in the map")
-	r.lock.Lock()
-	defer r.lock.Unlock()
-	user.Id = len(r.users) + 1
-	r.users[user.Id] = &user
-	r.logger.Debug("createUser - user added to the map", "user", user)
+
 	return &user, nil
 }

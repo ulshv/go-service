@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/ulshv/online-store-app/backend-go/internal/logger"
+	"github.com/ulshv/online-store-app/backend-go/internal/modules/user"
 	"github.com/ulshv/online-store-app/backend-go/internal/utils/httputils"
 )
 
@@ -36,11 +37,15 @@ func (c *authController) registerHandler(w http.ResponseWriter, r *http.Request)
 	result, err := c.authService.register(registerDto.Email, registerDto.Password)
 	c.logger.Debug("after register", "result", result, "err", err)
 	if err != nil {
+		respStatus := http.StatusInternalServerError
+		if err == user.ErrEmailTaken {
+			respStatus = http.StatusConflict
+		}
 		slog.Debug("received err, writing to client", "err", "err")
-		httputils.WriteErrorJson(w, err.Error(), http.StatusInternalServerError)
+		httputils.WriteErrorJson(w, err.Error(), respStatus)
 		return
 	}
-	c.logger.Debug("after register", "result", result)
+	c.logger.Debug("writing json response to client", "result", result)
 	httputils.WriteJson(w, result)
 }
 
