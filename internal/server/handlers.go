@@ -6,7 +6,7 @@ import (
 	"github.com/ulshv/go-service/internal/application"
 )
 
-func registerRoutes(mux *http.ServeMux, app *application.App) *http.ServeMux {
+func registerHandlers(mux *http.ServeMux, app *application.App) *http.ServeMux {
 	app.AuthModule.AuthHandlers.RegisterHandlers(mux)
 
 	return mux

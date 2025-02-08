@@ -10,7 +10,7 @@ import (
 func NewServer(address, port string, app *application.App) *http.Server {
 	mux := http.NewServeMux()
 
-	registerRoutes(mux, app)
+	registerHandlers(mux, app)
 
 	server := &http.Server{
 		Addr:    fmt.Sprintf("%s:%s", address, port),
