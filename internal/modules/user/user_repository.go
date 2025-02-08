@@ -4,7 +4,7 @@ import (
 	"log/slog"
 
 	"github.com/jmoiron/sqlx"
-	"github.com/ulshv/online-store-app/backend-go/internal/logger"
+	"github.com/ulshv/go-service/internal/logger"
 )
 
 type userRepository struct {

@@ -1,4 +1,4 @@
-module github.com/ulshv/online-store-app/backend-go
+module github.com/ulshv/go-service
 
 go 1.23.5
 

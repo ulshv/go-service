@@ -1,6 +1,6 @@
 package auth
 
-import "github.com/ulshv/online-store-app/backend-go/internal/modules/user"
+import "github.com/ulshv/go-service/internal/modules/user"
 
 type AuthModule struct {
 	authService    *authService

@@ -9,11 +9,11 @@ import (
 	"testing"
 
 	"github.com/jmoiron/sqlx"
-	"github.com/ulshv/online-store-app/backend-go/internal/database"
-	"github.com/ulshv/online-store-app/backend-go/internal/database/migrations"
-	"github.com/ulshv/online-store-app/backend-go/internal/logger"
-	"github.com/ulshv/online-store-app/backend-go/internal/modules/user"
-	"github.com/ulshv/online-store-app/backend-go/internal/utils/testutils"
+	"github.com/ulshv/go-service/internal/database"
+	"github.com/ulshv/go-service/internal/database/migrations"
+	"github.com/ulshv/go-service/internal/logger"
+	"github.com/ulshv/go-service/internal/modules/user"
+	"github.com/ulshv/go-service/internal/utils/testutils"
 )
 
 func initDb() *sqlx.DB {

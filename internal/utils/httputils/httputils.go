@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	logger_mod "github.com/ulshv/online-store-app/backend-go/internal/logger"
+	logger_mod "github.com/ulshv/go-service/internal/logger"
 )
 
 var (

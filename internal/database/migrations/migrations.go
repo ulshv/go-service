@@ -12,7 +12,7 @@ import (
 	"github.com/golang-migrate/migrate/v4/database/sqlite3"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 	"github.com/jmoiron/sqlx"
-	db_mod "github.com/ulshv/online-store-app/backend-go/internal/database"
+	db_mod "github.com/ulshv/go-service/internal/database"
 )
 
 func RunMigrations(db *sqlx.DB, migrationsPath string, logger *slog.Logger, dbType db_mod.DBType) error {

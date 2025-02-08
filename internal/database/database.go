@@ -6,7 +6,7 @@ import (
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 	_ "github.com/mattn/go-sqlite3"
-	"github.com/ulshv/online-store-app/backend-go/internal/logger"
+	"github.com/ulshv/go-service/internal/logger"
 )
 
 type DBType string

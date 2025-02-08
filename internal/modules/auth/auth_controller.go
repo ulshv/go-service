@@ -4,9 +4,9 @@ import (
 	"log/slog"
 	"net/http"
 
-	"github.com/ulshv/online-store-app/backend-go/internal/logger"
-	"github.com/ulshv/online-store-app/backend-go/internal/modules/user"
-	"github.com/ulshv/online-store-app/backend-go/internal/utils/httputils"
+	"github.com/ulshv/go-service/internal/logger"
+	"github.com/ulshv/go-service/internal/modules/user"
+	"github.com/ulshv/go-service/internal/utils/httputils"
 )
 
 type authController struct {

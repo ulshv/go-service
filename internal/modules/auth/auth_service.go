@@ -3,8 +3,8 @@ package auth
 import (
 	"log/slog"
 
-	"github.com/ulshv/online-store-app/backend-go/internal/logger"
-	"github.com/ulshv/online-store-app/backend-go/internal/modules/user"
+	"github.com/ulshv/go-service/internal/logger"
+	"github.com/ulshv/go-service/internal/modules/user"
 )
 
 type authService struct {
