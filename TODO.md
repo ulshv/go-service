@@ -1,28 +1,29 @@
 # go-service TODO
 
-- [x] Доработать базовые тесты для /auth/register
-- [x] Реорганизовать структуру проекта, убрать FE
-- [x] Перейти на SQLite БД в модуле user и написать несколько CRUD-операциий в репозитории
+WIP/Done:
+- [x] Make basic tests for /auth/register finally work
+- [x] Reorganize the structure of the project, remove FE code (for now)
+- [x] Switch to SQLite DB in user module and write some CRUD-operations in userRepository
 - [x] Make /auth/register tests not to fail with the new SQLite-based userRepository
-- [x] Обновить README
-- [x] Переименовать проект в `go-service` (включая GH репу) и поправить импорты и GH репозиторий и поправить origin
-- [x] Сделать GH репу публичной
+- [x] Update README
+- [x] Rename the project to `go-service` (including GH repo) and adjust imports accordingly
+- [x] Make the GH repo public
 - [x] rename *controller to *handlers
 - [x] Add code examples in the readme
-- [x] Реальная генерация User.PasswordHash
-- [x] Реальная генерация auth.AuthToken (with tests)
+- [x] Real generation of User.PasswordHash
+- [x] Real generation of auth.AuthToken (with tests)
+- [x] Add route where generated auth token can be used (in somewhere like `/product/create` or `/auth/me`)
 - [ ] Add auth/me route for getting user info based on the AuthToken
   - [x] /auth/me route and tests
   - [ ] Context WithValue
   - [ ] Middleware
   - [ ] Context get value and check it with token in the DB
-- [ ] (???) БД таблица auth_tokens: `id, token (unique), user_id`
-- [ ] Функционал /auth/login (+ тесты)
-- [ ] Добавить роут где можно юзать сгенеренный auth token (типа `product/create`)
-- [ ] Тесты для модуля user
-- [ ] После завершения базового функционала модулей auth/user, Расписать архитектуру следующих модулей
+- [ ] /auth/login handler (+ tests)
 
-Later (someday):
+Backlog:
 - [ ] Почистить проект и сделать код look prettier, возможно добавить побольше дебаг-логов
-- [ ] `LOG_LEVEL=debug` instead of `LOG_DEBUG=1`
+- [ ] Handle `LOG_LEVEL=debug` instead of `LOG_DEBUG=1`
+- [ ] DB table auth_tokens: `id, token (unique), user_id` and revoke functionality for refresh_tokens
+- [ ] After finishing auth/user modules, write down the architecture for the next features (like product/order)
+- [ ] Tests for the user module
 

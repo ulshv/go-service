@@ -9,6 +9,7 @@
 - [WIP] Full tests coverage (unit/e2e)
 - [TODO] OpenAPI / Swagger
 
+
 # Build & Run
 
 Currently this project doesn't have any UI client,
@@ -138,3 +139,8 @@ func registerHandlers(mux *http.ServeMux, app *application.App) *http.ServeMux {
   return mux
 }
 ```
+
+# Project status
+
+Currenly the project is in active development.
+See [TODO.md](./TODO.md) for the backlog tasks.
