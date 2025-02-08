@@ -10,7 +10,16 @@
 
 # Build & Run
 
-Currently project doesn't have any UI client, so really the only way to test it's functionality is by automated tests. First, you need to install packages by `go get ./...` and then run tests (no PG instance running is required as it runs tests on SQLite DB): `go test ./...`. You can explore the DB state after the tests by exploring the `test.db` files in corresponding modules (i.e. `./internal/modules/auth/test.db`) via DBeaver or SQLite Viewer VSCode extension.
+Currently this project doesn't have any UI client,
+so really the only way to test its functionality is by automated tests.
+First, you'll need to install packages by `go get ./...` and then run tests
+(no running PG instance is required as the tests are running with SQLite DB):
+```bash
+go test ./...
+```
+You can explore the DB state after the tests by viewing the `test.db` files
+in corresponding modules (i.e. `./internal/modules/auth/test.db`)
+via DBeaver or SQLite Viewer VSCode extension.
 
 # A module code examples
 
