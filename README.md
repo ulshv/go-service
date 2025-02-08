@@ -12,6 +12,8 @@
 
 App initialization:
 ```go
+// `internal/application/application.go`
+
 db, err := database.NewConnection(dbConfig)
 // handle err
 
@@ -27,6 +29,8 @@ return &App{
 
 Module init:
 ```go
+// `internal/modules/auth/auth_module.go`
+
 func NewAuthModule(
   db *sqlx.DB,
   userModule *user.UserModule,
@@ -43,6 +47,8 @@ func NewAuthModule(
 
 Service init:
 ```go
+// `internal/modules/auth/auth_service.go`
+
 func newAuthService(
   db *sqlx.DB,
   userService *user.UserService,
@@ -57,6 +63,8 @@ func newAuthService(
 
 Repository init:
 ```go
+// `internal/modules/auth/auth_repository.go
+
 func newAuthRepository(db *sqlx.DB) *authRepository {
   return &authRepository{
     db:     db,
@@ -65,8 +73,32 @@ func newAuthRepository(db *sqlx.DB) *authRepository {
 }
 ```
 
+Module init in tests:
+```go
+// `internal/modules/auth/auth_test.go`
+
+func initModule() *AuthModule {
+  db := initDb()
+  migrations.RunMigrations(db, "migrations", logger.NewLogger("Migrations"), database.SQLite)
+  userModule := user.NewUserModule(db)
+  authModule := NewAuthModule(userModule)
+  return authModule
+}
+
+func TestRegister(t *testing.T) {
+  module := initModule()
+  ts := httptest.NewServer(http.HandlerFunc(module.AuthHandlers.registerHandler))
+  defer ts.Close()
+
+  tests := []struct{}
+  // ...
+}
+```
+
 Module handlers init/register:
 ```go
+// `internal/modules/auth/auth_handlers.go`
+
 func newAuthHandlers(authService *authService) *authHandlers {
   return &authHandlers{
     authService: authService,
@@ -82,6 +114,8 @@ func (h *authHandlers) RegisterHandlers(mux *http.ServeMux) {
 
 Module handlers registration on `mux`:
 ```go
+// `internal/server/handlers.go`
+
 func registerHandlers(mux *http.ServeMux, app *application.App) *http.ServeMux {
   app.AuthModule.AuthHandlers.RegisterHandlers(mux)
   app.UserModule.UserHandlers.RegisterHandlers(mux)

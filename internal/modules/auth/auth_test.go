@@ -32,7 +32,8 @@ func initModule() *AuthModule {
 	db := initDb()
 	migrations.RunMigrations(db, "migrations", logger.NewLogger("Migrations"), database.SQLite)
 	userModule := user.NewUserModule(db)
-	return NewAuthModule(userModule)
+	authModule := NewAuthModule(userModule)
+	return authModule
 }
 
 func TestRegister(t *testing.T) {
