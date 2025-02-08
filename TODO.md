@@ -1,4 +1,4 @@
-# go-service
+# go-service TODO
 
 - [x] Доработать базовые тесты для /auth/register
 - [x] Реорганизовать структуру проекта, убрать FE
@@ -9,13 +9,13 @@
 - [x] Сделать GH репу публичной
 - [x] rename *controller to *handlers
 - [x] Add code examples in the readme
-- [ ] Реальная генерация User.PasswordHash
-- [ ] Реальная генерация auth.AuthToken
-  - [ ] БД таблица auth_tokens: `id, token (unique), user_id`
+- [x] Реальная генерация User.PasswordHash
+- [x] Реальная генерация auth.AuthToken (with tests)
 - [ ] Add auth/me route for getting user info based on the AuthToken
   - [ ] Context WithValue
   - [ ] Middleware
   - [ ] Context get value and check it with token in the DB
+- [ ] (???) БД таблица auth_tokens: `id, token (unique), user_id`
 - [ ] Функционал /auth/login (+ тесты)
 - [ ] Добавить роут где можно юзать сгенеренный auth token (типа `product/create`)
 - [ ] Тесты для модуля user

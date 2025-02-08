@@ -5,11 +5,13 @@ import (
 
 	"github.com/ulshv/go-service/internal/logger"
 	"github.com/ulshv/go-service/internal/modules/user"
+	"github.com/ulshv/go-service/internal/utils/jwtutils"
 )
 
 type authService struct {
 	userService *user.UserService
 	logger      *slog.Logger
+	jwt         *jwtutils.Jwt
 }
 
 func newAuthService(
@@ -18,6 +20,7 @@ func newAuthService(
 	return &authService{
 		userService: userService,
 		logger:      logger.NewLogger("AuthService"),
+		jwt:         jwtutils.NewJWT(),
 	}
 }
 
@@ -35,23 +38,32 @@ func (s *authService) register(email, password string) (*registerResultDto, erro
 		return nil, err
 	}
 	s.logger.Debug("register - now generate toekn")
-	token := generateToken(user.Id)
+	tokenPair, err := s.jwt.GenerateTokenPair(user.Id)
+	if err != nil {
+		return nil, err
+	}
 	s.logger.Debug("register - generated token")
 	return &registerResultDto{
 		UserId: user.Id,
-		Token:  token,
+		Tokens: tokenPair,
 	}, nil
 }
 
-func (s *authService) login(email, password string) (string, error) {
+func (s *authService) login(email, password string) (*loginResultDto, error) {
 	s.logger.Info("login", "email", email)
 	user, err := s.userService.FindUserByEmail(email)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 	if !validatePassword(password, user.PasswordHash) {
 		s.logger.Debug("login - invalid email or password")
-		return "", errInvalidEmailOrPassword
+		return nil, errInvalidEmailOrPassword
 	}
-	return generateToken(user.Id), nil
+	tokenPair, err := s.jwt.GenerateTokenPair(user.Id)
+	if err != nil {
+		return nil, err
+	}
+	return &loginResultDto{
+		Tokens: tokenPair,
+	}, nil
 }

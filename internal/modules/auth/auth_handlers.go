@@ -55,14 +55,14 @@ func (h *authHandlers) loginHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		return
 	}
-	token, err := h.authService.login(loginDto.Email, loginDto.Password)
+	result, err := h.authService.login(loginDto.Email, loginDto.Password)
 	if err != nil {
 		httputils.WriteErrorJson(w, err.Error(), http.StatusUnauthorized)
 		return
 	}
-	httputils.WriteJson(w, map[string]string{"token": token})
+	httputils.WriteJson(w, result)
 }
 
-func (h *authHandlers) logoutHandler(w http.ResponseWriter, r *http.Request) {
+func (h *authHandlers) logoutHandler(w http.ResponseWriter, _ *http.Request) {
 	w.Write([]byte("Logout"))
 }
