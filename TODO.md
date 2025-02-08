@@ -5,9 +5,10 @@
 - [x] Перейти на SQLite БД в модуле user и написать несколько CRUD-операциий в репозитории
 - [x] Make /auth/register tests not to fail with the new SQLite-based userRepository
 - [x] Обновить README
-- [ ] Переименовать проект в `go-service` (включая GH репу) и поправить импорты и GH репозиторий и поправить origin
-- [ ] Сделать GH репу публичной
-- [ ] rename *controller to *handlers
+- [x] Переименовать проект в `go-service` (включая GH репу) и поправить импорты и GH репозиторий и поправить origin
+- [x] Сделать GH репу публичной
+- [x] rename *controller to *handlers
+- [ ] Add code examples in the readme
 - [ ] Функционал /auth/login (+ тесты)
 - [ ] Почистить проект и сделать код look prettier, возможно добавить побольше дебаг-логов
 - [ ] Добавить роут где можно юзать сгенеренный auth token (типа `product/create`)

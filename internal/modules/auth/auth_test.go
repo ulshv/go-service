@@ -37,7 +37,7 @@ func initModule() *AuthModule {
 
 func TestRegister(t *testing.T) {
 	module := initModule()
-	ts := httptest.NewServer(http.HandlerFunc(module.AuthController.registerHandler))
+	ts := httptest.NewServer(http.HandlerFunc(module.AuthHandlers.registerHandler))
 	defer ts.Close()
 
 	tests := []struct {

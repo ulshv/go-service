@@ -7,7 +7,7 @@ import (
 )
 
 func registerRoutes(mux *http.ServeMux, app *application.App) *http.ServeMux {
-	app.AuthModule.AuthController.RegisterRoutes(mux)
+	app.AuthModule.AuthHandlers.RegisterHandlers(mux)
 
 	return mux
 }
