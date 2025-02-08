@@ -28,15 +28,15 @@ return &App{
 Module init:
 ```go
 func NewAuthModule(
-	userModule *user.UserModule,
+  userModule *user.UserModule,
 ) *AuthModule {
-	service := newAuthService(userModule.UserService)
-	handlers := newAuthHandlers(service)
+  service := newAuthService(userModule.UserService)
+  handlers := newAuthHandlers(service)
 
-	return &AuthModule{
-		authService:  service,
-		AuthHandlers: handlers,
-	}
+  return &AuthModule{
+    authService:  service,
+    AuthHandlers: handlers,
+  }
 }
 ```
 
@@ -44,48 +44,48 @@ Service init:
 ```go
 func newAuthService(
   db *sqlx.DB,
-	userService *user.UserService,
+  userService *user.UserService,
 ) *authService {
-	return &authService{
+  return &authService{
     db:          *sqlx.DB,
-		userService: userService,
-		logger:      logger.NewLogger("AuthService"),
-	}
+    userService: userService,
+    logger:      logger.NewLogger("AuthService"),
+  }
 }
 ```
 
 Repository init:
 ```go
 func newAuthRepository(db *sqlx.DB) *authRepository {
-	return &authRepository{
-		db:     db,
-		logger: logger.NewLogger("AuthRepository"),
-	}
+  return &authRepository{
+    db:     db,
+    logger: logger.NewLogger("AuthRepository"),
+  }
 }
 ```
 
 Module handlers init/register:
 ```go
 func newAuthHandlers(authService *authService) *authHandlers {
-	return &authHandlers{
-		authService: authService,
-		logger:      logger.NewLogger("AuthHandlers"),
-	}
+  return &authHandlers{
+    authService: authService,
+    logger:      logger.NewLogger("AuthHandlers"),
+  }
 }
 
 func (h *authHandlers) RegisterHandlers(mux *http.ServeMux) {
-	mux.HandleFunc("POST /api/v1/auth/register", h.registerHandler)
-	mux.HandleFunc("POST /api/v1/auth/login", h.loginHandler)
+  mux.HandleFunc("POST /api/v1/auth/register", h.registerHandler)
+  mux.HandleFunc("POST /api/v1/auth/login", h.loginHandler)
 }
 ```
 
 Module handlers registration on `mux`:
 ```go
 func registerHandlers(mux *http.ServeMux, app *application.App) *http.ServeMux {
-	app.AuthModule.AuthHandlers.RegisterHandlers(mux)
+  app.AuthModule.AuthHandlers.RegisterHandlers(mux)
   app.UserModule.UserHandlers.RegisterHandlers(mux)
   // ...
 
-	return mux
+  return mux
 }
 ```
