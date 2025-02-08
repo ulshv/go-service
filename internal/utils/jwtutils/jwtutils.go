@@ -69,12 +69,12 @@ func (j *Jwt) GenerateTokenPair(userId int) (TokenPair, error) {
 	}, nil
 }
 
-func (j *Jwt) ValidateAccessToken(tokenString string, userId int) error {
-	return j.validateToken(tokenString, userId, AccessToken, j.accessTokenSecret)
+func (j *Jwt) ValidateAccessToken(tokenString string) (*Claims, error) {
+	return j.validateToken(tokenString, AccessToken, j.accessTokenSecret)
 }
 
-func (j *Jwt) ValidateRefreshToken(tokenString string, userId int) error {
-	return j.validateToken(tokenString, userId, RefreshToken, j.refreshTokenSecret)
+func (j *Jwt) ValidateRefreshToken(tokenString string) (*Claims, error) {
+	return j.validateToken(tokenString, RefreshToken, j.refreshTokenSecret)
 }
 
 func (j *Jwt) RefreshTokenPair(refreshToken string) (TokenPair, error) {
@@ -124,7 +124,7 @@ func (j *Jwt) generateToken(userId int, tokenType TokenType, secret []byte, dura
 	return signedToken, nil
 }
 
-func (j *Jwt) validateToken(tokenString string, userId int, tokenType TokenType, secret []byte) error {
+func (j *Jwt) validateToken(tokenString string, tokenType TokenType, secret []byte) (*Claims, error) {
 	token, err := jwt_mod.ParseWithClaims(tokenString, &Claims{}, func(token *jwt_mod.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt_mod.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
@@ -133,23 +133,23 @@ func (j *Jwt) validateToken(tokenString string, userId int, tokenType TokenType,
 	})
 
 	if err != nil {
-		return fmt.Errorf("failed to parse token: %v", err)
+		return nil, fmt.Errorf("failed to parse token: %v", err)
 	}
 
 	claims, ok := token.Claims.(*Claims)
 	if !ok || !token.Valid {
-		return fmt.Errorf("invalid token claims")
+		return nil, fmt.Errorf("invalid token claims")
 	}
 
 	// Validate token type
 	if claims.TokenType != tokenType {
-		return fmt.Errorf("invalid token type")
+		return nil, fmt.Errorf("invalid token type")
 	}
 
-	// Validate user ID
-	if claims.UserId != userId {
-		return fmt.Errorf("token doesn't belong to user")
-	}
+	// // Validate user ID
+	// if claims.UserId != userId {
+	// 	return fmt.Errorf("token doesn't belong to user")
+	// }
 
-	return nil
+	return claims, nil
 }

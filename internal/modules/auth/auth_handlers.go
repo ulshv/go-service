@@ -3,6 +3,7 @@ package auth
 import (
 	"log/slog"
 	"net/http"
+	"strings"
 
 	"github.com/ulshv/go-service/internal/logger"
 	"github.com/ulshv/go-service/internal/modules/user"
@@ -24,6 +25,7 @@ func newAuthHandlers(authService *authService) *authHandlers {
 func (h *authHandlers) RegisterHandlers(mux *http.ServeMux) {
 	mux.HandleFunc("POST /api/v1/auth/register", h.registerHandler)
 	mux.HandleFunc("POST /api/v1/auth/login", h.loginHandler)
+	mux.HandleFunc("GET /api/v1/auth/me", h.meHandler)
 }
 
 func (h *authHandlers) registerHandler(w http.ResponseWriter, r *http.Request) {
@@ -63,6 +65,26 @@ func (h *authHandlers) loginHandler(w http.ResponseWriter, r *http.Request) {
 	httputils.WriteJson(w, result)
 }
 
-func (h *authHandlers) logoutHandler(w http.ResponseWriter, _ *http.Request) {
-	w.Write([]byte("Logout"))
+func (h *authHandlers) meHandler(w http.ResponseWriter, r *http.Request) {
+	h.logger.Info("meHandler")
+	authHeader := r.Header.Get("Authorization")
+	if !strings.HasPrefix(authHeader, "Bearer ") {
+		httputils.WriteErrorJson(w, "invalid authorization header", http.StatusUnauthorized)
+		return
+	}
+	accessToken := strings.TrimPrefix(authHeader, "Bearer ")
+	h.logger.Debug("meHandler - got access token", "token", accessToken)
+	claims, err := h.authService.jwt.ValidateAccessToken(accessToken)
+	if err != nil {
+		httputils.WriteErrorJson(w, err.Error(), http.StatusUnauthorized)
+		return
+	}
+	h.logger.Debug("meHandler - parsed token", "claims", claims)
+	user, err := h.authService.userService.GetUserById(claims.UserId)
+	if err != nil {
+		httputils.WriteErrorJson(w, "invalid token", http.StatusUnauthorized)
+		return
+	}
+	user.PasswordHash = ""
+	httputils.WriteJson(w, user)
 }

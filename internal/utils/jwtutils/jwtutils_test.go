@@ -12,11 +12,11 @@ func TestJWT(t *testing.T) {
 		if err != nil {
 			t.Errorf("GenerateTokenPair error: %v", err)
 		}
-		err = jwt.ValidateAccessToken(tokenPair.AccessToken, userId)
+		_, err = jwt.ValidateAccessToken(tokenPair.AccessToken)
 		if err != nil {
 			t.Errorf("ValidateAccessToken error: %v", err)
 		}
-		err = jwt.ValidateRefreshToken(tokenPair.RefreshToken, userId)
+		_, err = jwt.ValidateRefreshToken(tokenPair.RefreshToken)
 		if err != nil {
 			t.Errorf("ValidateRefreshToken error: %v", err)
 		}
