@@ -13,7 +13,6 @@ import (
 	"github.com/jmoiron/sqlx"
 	"github.com/ulshv/go-service/internal/database"
 	"github.com/ulshv/go-service/internal/database/migrations"
-	"github.com/ulshv/go-service/internal/logger"
 	"github.com/ulshv/go-service/internal/modules/user"
 	"github.com/ulshv/go-service/internal/utils/testutils"
 )
@@ -34,7 +33,7 @@ func initDb() *sqlx.DB {
 
 func initModule() *AuthModule {
 	db := initDb()
-	migrations.RunMigrations(db, "migrations", logger.NewLogger("Migrations"), database.SQLite)
+	migrations.RunMigrations(db, database.SQLite)
 	userModule := user.NewUserModule(db)
 	authModule := NewAuthModule(userModule)
 	return authModule

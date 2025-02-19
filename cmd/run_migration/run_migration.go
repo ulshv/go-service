@@ -27,7 +27,7 @@ func main() {
 		logger.Error("Failed to connect to database", "error", err)
 		os.Exit(1)
 	}
-	if err = migrations.RunMigrations(db, "migrations", logger, database.PostgreSQL); err != nil {
+	if err = migrations.RunMigrations(db, database.PostgreSQL); err != nil {
 		logger.Error("Failed to run database migrations", "error", err)
 		os.Exit(1)
 	}

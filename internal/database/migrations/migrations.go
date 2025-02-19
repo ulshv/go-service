@@ -2,7 +2,6 @@ package migrations
 
 import (
 	"fmt"
-	"log/slog"
 	"os"
 	"path/filepath"
 
@@ -13,9 +12,11 @@ import (
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 	"github.com/jmoiron/sqlx"
 	db_mod "github.com/ulshv/go-service/internal/database"
+	logger_mod "github.com/ulshv/go-service/internal/logger"
 )
 
-func RunMigrations(db *sqlx.DB, migrationsPath string, logger *slog.Logger, dbType db_mod.DBType) error {
+func RunMigrations(db *sqlx.DB, dbType db_mod.DBType) error {
+	logger := logger_mod.NewLogger("migrations")
 	logger.Info("RunMigrations", "database_type", dbType)
 
 	// Get current working directory and create absolute path to migrations
@@ -24,6 +25,7 @@ func RunMigrations(db *sqlx.DB, migrationsPath string, logger *slog.Logger, dbTy
 		logger.Error("could not get working directory", "error", err)
 		return fmt.Errorf("could not get working directory: %w", err)
 	}
+	migrationsPath := "migrations" // `migrations dir in the root (./migrations)`
 	absolutePath := filepath.Join(cwd, "../../../", migrationsPath)
 	sourceURL := fmt.Sprintf("file://%s", absolutePath)
 	logger.Debug("migrations source URL", "url", sourceURL)

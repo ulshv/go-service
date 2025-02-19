@@ -10,7 +10,7 @@ func ErrorStringFromBody(body []byte) string {
 	err := json.Unmarshal(body, &errJson)
 	if err != nil {
 		// it's safe since it's used only in tests
-		log.Fatal("ERROR [testutils]: ErrorStringFromBody err=", err)
+		log.Fatal("ERROR [testutils]: ErrorStringFromBody json.Unmarshal err=", err)
 	}
 	errVal := errJson["error"]
 	switch errVal := errVal.(type) {
