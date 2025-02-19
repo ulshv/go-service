@@ -40,7 +40,7 @@ func initModule() *ProductModule {
 
 func TestCreateAndGetProduct(t *testing.T) {
 	module := initModule()
-	createProductSrv := httptest.NewServer(http.HandlerFunc(module.handlers.createProductHandler))
+	productSrv := httptest.NewServer(module.handlers.InitRoutes(&http.ServeMux{}))
 	// getProductSrv := httptest.NewServer(http.HandlerFunc(module.handlers.createProductHandler))
 
 	createBody, err := json.Marshal(createProductDto{
@@ -51,7 +51,8 @@ func TestCreateAndGetProduct(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	createResp, err := http.Post(createProductSrv.URL, "application/json", bytes.NewBuffer(createBody))
+	createUrl := fmt.Sprintf("%s/api/v1/products", productSrv.URL)
+	createResp, err := http.Post(createUrl, "application/json", bytes.NewBuffer(createBody))
 	if err != nil {
 		t.Fatal(err)
 	}

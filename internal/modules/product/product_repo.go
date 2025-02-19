@@ -22,9 +22,9 @@ var queries = struct {
 VALUES (:name, :desc, :price, :created_at, :updated_at)
 RETURNING id, name, desc, price, created_at, updated_at`,
 	updateProduct: `UPDATE products
-SET name = :name, desc = :desc, price = :price
+SET name = :name, desc = :desc, price = :price, updated_at = :updated_at
 WHERE id = :id
-RETURNING id, name, desc, price`,
+RETURNING id, name, desc, price, created_at, updated_at`,
 }
 
 func newProductRepo(db *sqlx.DB) *productRepo {
