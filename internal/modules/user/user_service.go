@@ -6,7 +6,7 @@ import (
 	"github.com/jmoiron/sqlx"
 	"github.com/lib/pq"
 	"github.com/mattn/go-sqlite3"
-	"github.com/ulshv/go-service/internal/logger"
+	"github.com/ulshv/go-service/pkg/logs"
 )
 
 type UserService struct {
@@ -17,7 +17,7 @@ type UserService struct {
 func NewUserService(db *sqlx.DB) *UserService {
 	return &UserService{
 		userRepository: newUserRepository(db),
-		logger:         logger.NewLogger("UserService"),
+		logger:         logs.NewLogger("UserService"),
 	}
 }
 

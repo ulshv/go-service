@@ -6,8 +6,8 @@ import (
 	"time"
 
 	jwt_mod "github.com/golang-jwt/jwt/v5"
-	"github.com/ulshv/go-service/internal/logger"
 	"github.com/ulshv/go-service/internal/utils/envutils"
+	"github.com/ulshv/go-service/pkg/logs"
 )
 
 type TokenType string
@@ -44,11 +44,11 @@ func NewJWT() *Jwt {
 		refreshTokenSecret:   []byte(envutils.RequireEnv("JWT_REFRESH_TOKEN_SECRET")),
 		accessTokenDuration:  15 * time.Minute,
 		refreshTokenDuration: 7 * 24 * time.Hour,
-		logger:               logger.NewLogger("JWTUtils"),
+		logger:               logs.NewLogger("JWTUtils"),
 	}
 }
 
-var jwtLogger = logger.NewLogger("JWTUtils")
+var jwtLogger = logs.NewLogger("JWTUtils")
 
 func (j *Jwt) GenerateTokenPair(userId int) (TokenPair, error) {
 	// Generate access token

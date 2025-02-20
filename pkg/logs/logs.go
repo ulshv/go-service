@@ -1,4 +1,4 @@
-package logger
+package logs
 
 import (
 	"context"
@@ -10,24 +10,24 @@ import (
 	"strings"
 )
 
-type defaultHandler struct {
+type handler struct {
 	opts   *slog.HandlerOptions
 	logger *log.Logger
 	attrs  []slog.Attr
 }
 
-func newDefaultHandler(w io.Writer, opts *slog.HandlerOptions) *defaultHandler {
-	return &defaultHandler{
+func newLogHandler(w io.Writer, opts *slog.HandlerOptions) *handler {
+	return &handler{
 		opts:   opts,
 		logger: log.New(w, "", log.LstdFlags),
 	}
 }
 
-func (h *defaultHandler) Enabled(ctx context.Context, level slog.Level) bool {
+func (h *handler) Enabled(ctx context.Context, level slog.Level) bool {
 	return level.Level() >= h.opts.Level.Level()
 }
 
-func (h *defaultHandler) Handle(ctx context.Context, r slog.Record) error {
+func (h *handler) Handle(ctx context.Context, r slog.Record) error {
 	if !h.Enabled(ctx, r.Level) {
 		return nil
 	}
@@ -72,19 +72,23 @@ func (h *defaultHandler) Handle(ctx context.Context, r slog.Record) error {
 	return nil
 }
 
-func (h *defaultHandler) WithAttrs(attrs []slog.Attr) slog.Handler {
+func (h *handler) WithAttrs(attrs []slog.Attr) slog.Handler {
 	newHandler := *h
 	newHandler.attrs = append(newHandler.attrs, attrs...)
 	return &newHandler
 }
 
-func (h *defaultHandler) WithGroup(name string) slog.Handler {
+func (h *handler) WithGroup(name string) slog.Handler {
 	return h
 }
 
+func (h *handler) WithService(svcName string) {
+	h.WithAttrs([]slog.Attr{{Key: "service", Value: slog.StringValue(svcName)}})
+}
+
 func NewLogger(serviceName string) *slog.Logger {
-	debugMode := os.Getenv("LOG_DEBUG") == "1"
-	useJSON := os.Getenv("LOG_JSON") == "1"
+	debugMode := os.Getenv("LOG_LEVEL") == "debug"
+	useJSON := os.Getenv("LOG_OUTPUT") == "json"
 	logLevel := slog.LevelInfo
 
 	if debugMode {
@@ -95,14 +99,14 @@ func NewLogger(serviceName string) *slog.Logger {
 		AddSource: false,
 	}
 
-	var handler slog.Handler
+	var h slog.Handler
 	if useJSON {
-		handler = slog.NewJSONHandler(os.Stdout, opts)
+		h = slog.NewJSONHandler(os.Stdout, opts)
 	} else {
-		handler = newDefaultHandler(os.Stdout, opts)
+		h = newLogHandler(os.Stdout, opts)
 	}
 
-	logger := slog.New(handler).With(
+	logger := slog.New(h).With(
 		slog.String("service", serviceName),
 	)
 	return logger

@@ -3,9 +3,9 @@ package auth
 import (
 	"log/slog"
 
-	"github.com/ulshv/go-service/internal/logger"
 	"github.com/ulshv/go-service/internal/modules/user"
 	"github.com/ulshv/go-service/internal/utils/jwtutils"
+	"github.com/ulshv/go-service/pkg/logs"
 )
 
 type authService struct {
@@ -19,7 +19,7 @@ func newAuthService(
 ) *authService {
 	return &authService{
 		userService: userService,
-		logger:      logger.NewLogger("AuthService"),
+		logger:      logs.NewLogger("AuthService"),
 		jwt:         jwtutils.NewJWT(),
 	}
 }

@@ -4,12 +4,12 @@ import (
 	"encoding/json"
 	"net/http"
 
-	logger_mod "github.com/ulshv/go-service/internal/logger"
+	"github.com/ulshv/go-service/pkg/logs"
 )
 
 var (
 	errJsonDecode = "error while decoding json, make sure the data structure is correct"
-	logger        = logger_mod.NewLogger("httputils")
+	logger        = logs.NewLogger("httputils")
 )
 
 func WriteJson(w http.ResponseWriter, data any) {

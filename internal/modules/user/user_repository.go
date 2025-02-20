@@ -4,7 +4,7 @@ import (
 	"log/slog"
 
 	"github.com/jmoiron/sqlx"
-	"github.com/ulshv/go-service/internal/logger"
+	"github.com/ulshv/go-service/pkg/logs"
 )
 
 type userRepository struct {
@@ -15,7 +15,7 @@ type userRepository struct {
 func newUserRepository(db *sqlx.DB) *userRepository {
 	return &userRepository{
 		db:     db,
-		logger: logger.NewLogger("UserRepository"),
+		logger: logs.NewLogger("UserRepository"),
 	}
 }
 

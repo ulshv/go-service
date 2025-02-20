@@ -36,6 +36,7 @@
 - [ ] Instead of creating a new logger instance for every service, initialize it once and add WithService(svc string) method
 
 ## Backlog:
+- [ ] Fix envutils/LoadEnvFiles (filenames is rewritten and arg is not used)
 - [ ] Clean up the codebase and make the code look prettier
 - [ ] DB table auth_tokens: `id, token (unique), user_id` and revoke functionality for refresh_tokens
 - [ ] After finishing auth/user modules, write down the architecture for the next features (like product/order)

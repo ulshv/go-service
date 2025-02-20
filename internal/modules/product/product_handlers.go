@@ -1,9 +1,11 @@
 package product
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/ulshv/go-service/internal/utils/httputils"
+	"github.com/ulshv/go-service/pkg/mw"
 )
 
 type productHandlers struct {
@@ -16,9 +18,19 @@ func newProductHandlers(svc *productSvc) *productHandlers {
 	}
 }
 
+func AuthenticateMw(w http.ResponseWriter, r *http.Request) {
+	accessToken := r.Header.Get("Authorization")
+	fmt.Println(accessToken)
+	// TODO
+}
+
+func AuthRequiredMw(w http.ResponseWriter, r *http.Request) {
+	// TODO
+}
+
 func (h *productHandlers) RegisterHandlers(mux *http.ServeMux) *http.ServeMux {
 	mux.HandleFunc("GET /api/v1/products/:id", h.getProductByIdHandler)
-	mux.HandleFunc("POST /api/v1/products", h.createProductHandler)
+	mux.HandleFunc("POST /api/v1/products", mw.Chain(AuthenticateMw, AuthRequiredMw, h.createProductHandler))
 	return mux
 }
 

@@ -12,11 +12,11 @@ import (
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 	"github.com/jmoiron/sqlx"
 	db_mod "github.com/ulshv/go-service/internal/database"
-	logger_mod "github.com/ulshv/go-service/internal/logger"
+	"github.com/ulshv/go-service/pkg/logs"
 )
 
 func RunMigrations(db *sqlx.DB, dbType db_mod.DBType) error {
-	logger := logger_mod.NewLogger("migrations")
+	logger := logs.NewLogger("migrations")
 	logger.Info("RunMigrations", "database_type", dbType)
 
 	// Get current working directory and create absolute path to migrations

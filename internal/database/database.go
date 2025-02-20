@@ -6,7 +6,7 @@ import (
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 	_ "github.com/mattn/go-sqlite3"
-	"github.com/ulshv/go-service/internal/logger"
+	"github.com/ulshv/go-service/pkg/logs"
 )
 
 type DBType string
@@ -26,7 +26,7 @@ type Config struct {
 }
 
 func NewConnection(cfg Config) (*sqlx.DB, error) {
-	logger := logger.NewLogger("Database")
+	logger := logs.NewLogger("Database")
 
 	logger.Info("Connecting to database...", "config", cfg)
 

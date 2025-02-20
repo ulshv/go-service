@@ -5,9 +5,9 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/ulshv/go-service/internal/logger"
 	"github.com/ulshv/go-service/internal/modules/user"
 	"github.com/ulshv/go-service/internal/utils/httputils"
+	"github.com/ulshv/go-service/pkg/logs"
 )
 
 type authHandlers struct {
@@ -18,7 +18,7 @@ type authHandlers struct {
 func newAuthHandlers(authService *authService) *authHandlers {
 	return &authHandlers{
 		authService: authService,
-		logger:      logger.NewLogger("AuthHandlers"),
+		logger:      logs.NewLogger("AuthHandlers"),
 	}
 }
 

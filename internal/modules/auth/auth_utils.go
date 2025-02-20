@@ -3,11 +3,11 @@ package auth
 import (
 	"fmt"
 
-	"github.com/ulshv/go-service/internal/logger"
+	"github.com/ulshv/go-service/pkg/logs"
 	"golang.org/x/crypto/bcrypt"
 )
 
-var utilsLogger = logger.NewLogger("AuthUtils")
+var utilsLogger = logs.NewLogger("AuthUtils")
 
 func hashPassword(password string) (string, error) {
 	hashedBytes, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)

@@ -5,12 +5,12 @@ import (
 
 	"github.com/ulshv/go-service/internal/database"
 	"github.com/ulshv/go-service/internal/database/migrations"
-	"github.com/ulshv/go-service/internal/logger"
 	"github.com/ulshv/go-service/internal/utils/envutils"
+	"github.com/ulshv/go-service/pkg/logs"
 )
 
 func main() {
-	logger := logger.NewLogger("run_migration")
+	logger := logs.NewLogger("run_migration")
 	logger.Info("Starting the migration")
 
 	envutils.LoadEnvFiles(".env")
