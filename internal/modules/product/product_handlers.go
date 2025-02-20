@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/ulshv/go-service/internal/utils/httputils"
 	"github.com/ulshv/go-service/pkg/mw"
+	"github.com/ulshv/go-service/pkg/utils/httputils"
 )
 
 type productHandlers struct {

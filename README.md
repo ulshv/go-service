@@ -27,7 +27,7 @@ via DBeaver or SQLite Viewer VSCode extension.
 
 App initialization:
 ```go
-// `internal/application/application.go`
+// `internal/core/application/application.go`
 
 db, err := database.NewConnection(dbConfig)
 // handle err
@@ -129,7 +129,7 @@ func (h *authHandlers) RegisterHandlers(mux *http.ServeMux) {
 
 Module handlers registration on `mux`:
 ```go
-// `internal/server/handlers.go`
+// `internal/core/server/handlers.go`
 
 func registerHandlers(mux *http.ServeMux, app *application.App) *http.ServeMux {
   app.AuthModule.AuthHandlers.RegisterHandlers(mux)

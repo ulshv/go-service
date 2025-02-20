@@ -6,8 +6,8 @@ import (
 	"strings"
 
 	"github.com/ulshv/go-service/internal/modules/user"
-	"github.com/ulshv/go-service/internal/utils/httputils"
 	"github.com/ulshv/go-service/pkg/logs"
+	"github.com/ulshv/go-service/pkg/utils/httputils"
 )
 
 type authHandlers struct {

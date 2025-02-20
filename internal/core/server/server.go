@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/ulshv/go-service/internal/application"
+	"github.com/ulshv/go-service/internal/core/application"
 )
 
 func NewServer(address, port string, app *application.App) *http.Server {

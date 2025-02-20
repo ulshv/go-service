@@ -3,7 +3,7 @@ package auth
 import (
 	"errors"
 
-	"github.com/ulshv/go-service/internal/utils/jwtutils"
+	"github.com/ulshv/go-service/pkg/utils/jwtutils"
 )
 
 var (

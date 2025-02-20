@@ -11,10 +11,10 @@ import (
 	"testing"
 
 	"github.com/jmoiron/sqlx"
-	"github.com/ulshv/go-service/internal/database"
-	"github.com/ulshv/go-service/internal/database/migrations"
+	"github.com/ulshv/go-service/internal/core/database"
+	"github.com/ulshv/go-service/internal/core/database/migrations"
 	"github.com/ulshv/go-service/internal/modules/user"
-	"github.com/ulshv/go-service/internal/utils/testutils"
+	"github.com/ulshv/go-service/pkg/utils/testutils"
 )
 
 func initDb() *sqlx.DB {

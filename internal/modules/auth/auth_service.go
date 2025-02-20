@@ -4,8 +4,8 @@ import (
 	"log/slog"
 
 	"github.com/ulshv/go-service/internal/modules/user"
-	"github.com/ulshv/go-service/internal/utils/jwtutils"
 	"github.com/ulshv/go-service/pkg/logs"
+	"github.com/ulshv/go-service/pkg/utils/jwtutils"
 )
 
 type authService struct {

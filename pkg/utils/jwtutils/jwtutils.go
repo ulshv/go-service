@@ -6,8 +6,8 @@ import (
 	"time"
 
 	jwt_mod "github.com/golang-jwt/jwt/v5"
-	"github.com/ulshv/go-service/internal/utils/envutils"
 	"github.com/ulshv/go-service/pkg/logs"
+	"github.com/ulshv/go-service/pkg/utils/envutils"
 )
 
 type TokenType string

@@ -2,7 +2,7 @@ package application
 
 import (
 	"github.com/jmoiron/sqlx"
-	"github.com/ulshv/go-service/internal/database"
+	"github.com/ulshv/go-service/internal/core/database"
 	"github.com/ulshv/go-service/internal/modules/auth"
 	"github.com/ulshv/go-service/internal/modules/user"
 )

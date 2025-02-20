@@ -4,10 +4,10 @@ import (
 	"log"
 	"log/slog"
 
-	"github.com/ulshv/go-service/internal/application"
-	"github.com/ulshv/go-service/internal/database"
-	"github.com/ulshv/go-service/internal/server"
-	"github.com/ulshv/go-service/internal/utils/envutils"
+	"github.com/ulshv/go-service/internal/core/application"
+	"github.com/ulshv/go-service/internal/core/database"
+	"github.com/ulshv/go-service/internal/core/server"
+	"github.com/ulshv/go-service/pkg/utils/envutils"
 )
 
 func main() {

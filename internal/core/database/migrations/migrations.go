@@ -11,7 +11,7 @@ import (
 	"github.com/golang-migrate/migrate/v4/database/sqlite3"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 	"github.com/jmoiron/sqlx"
-	db_mod "github.com/ulshv/go-service/internal/database"
+	db_mod "github.com/ulshv/go-service/internal/core/database"
 	"github.com/ulshv/go-service/pkg/logs"
 )
 

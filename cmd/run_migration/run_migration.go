@@ -3,10 +3,10 @@ package main
 import (
 	"os"
 
-	"github.com/ulshv/go-service/internal/database"
-	"github.com/ulshv/go-service/internal/database/migrations"
-	"github.com/ulshv/go-service/internal/utils/envutils"
+	"github.com/ulshv/go-service/internal/core/database"
+	"github.com/ulshv/go-service/internal/core/database/migrations"
 	"github.com/ulshv/go-service/pkg/logs"
+	"github.com/ulshv/go-service/pkg/utils/envutils"
 )
 
 func main() {
