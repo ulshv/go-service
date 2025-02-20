@@ -40,7 +40,7 @@ func initModule() *ProductModule {
 
 func TestCreateAndGetProduct(t *testing.T) {
 	module := initModule()
-	productSrv := httptest.NewServer(module.handlers.InitRoutes(&http.ServeMux{}))
+	productSrv := httptest.NewServer(module.handlers.RegisterHandlers(&http.ServeMux{}))
 	// getProductSrv := httptest.NewServer(http.HandlerFunc(module.handlers.createProductHandler))
 
 	createBody, err := json.Marshal(createProductDto{

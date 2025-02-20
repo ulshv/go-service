@@ -16,7 +16,7 @@ func newProductHandlers(svc *productSvc) *productHandlers {
 	}
 }
 
-func (h *productHandlers) InitRoutes(mux *http.ServeMux) *http.ServeMux {
+func (h *productHandlers) RegisterHandlers(mux *http.ServeMux) *http.ServeMux {
 	mux.HandleFunc("GET /api/v1/products/:id", h.getProductByIdHandler)
 	mux.HandleFunc("POST /api/v1/products", h.createProductHandler)
 	return mux
