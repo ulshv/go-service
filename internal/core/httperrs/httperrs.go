@@ -15,8 +15,8 @@ const (
 	ErrCodeInternal    = "ERR_INTERNAL_SERVER_ERROR"
 	ErrCodeUnknown     = "ERR_UNKNOWN_ERR"
 	// Auth module
-	ErrEmailTaken             = "ERR_EMAIL_TAKEN"
-	ErrInvalidEmailOrPassword = "ERR_INVALID_EMAIL_OR_PASSWORD"
+	ErrCodeEmailTaken             = "ERR_EMAIL_TAKEN"
+	ErrCodeInvalidEmailOrPassword = "ERR_INVALID_EMAIL_OR_PASSWORD"
 )
 
 var (

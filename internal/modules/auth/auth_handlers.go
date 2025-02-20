@@ -44,7 +44,7 @@ func (h *authHandlers) registerHandler(w http.ResponseWriter, r *http.Request) {
 		errCode := httperrs.ErrCodeUnknown
 		if err == user.ErrEmailTaken {
 			respStatus = http.StatusConflict
-			errCode = httperrs.ErrEmailTaken
+			errCode = httperrs.ErrCodeEmailTaken
 		}
 		slog.Debug("received err, writing to client", "err", "err")
 		httputils.WriteErrorJson(w, err, errCode, respStatus)
@@ -64,7 +64,7 @@ func (h *authHandlers) loginHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		errCode := httperrs.ErrCodeUnknown
 		if errors.Is(err, errInvalidEmailOrPassword) {
-			errCode = httperrs.ErrInvalidEmailOrPassword
+			errCode = httperrs.ErrCodeInvalidEmailOrPassword
 		}
 		httputils.WriteErrorJson(w, err, errCode, http.StatusUnauthorized)
 		return
