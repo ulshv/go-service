@@ -7,7 +7,7 @@ import (
 )
 
 func registerHandlers(mux *http.ServeMux, app *application.App) *http.ServeMux {
-	app.AuthModule.AuthHandlers.RegisterHandlers(mux)
+	app.AuthModule.Handlers.RegisterHandlers(mux)
 
 	return mux
 }

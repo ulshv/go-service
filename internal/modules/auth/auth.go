@@ -10,21 +10,21 @@ var (
 	errInvalidEmailOrPassword = errors.New("invalid email or password")
 )
 
-type registerDto struct {
+type RegisterDto struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
 }
 
-type registerResultDto struct {
+type RegisterResultDto struct {
 	UserId int                `json:"user_id"`
 	Tokens jwtutils.TokenPair `json:"tokens"`
 }
 
-type loginDto struct {
+type LoginDto struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
 }
 
-type loginResultDto struct {
+type LoginResultDto struct {
 	Tokens jwtutils.TokenPair `json:"tokens"`
 }

@@ -24,7 +24,7 @@ func newAuthService(
 	}
 }
 
-func (s *authService) register(email, password string) (*registerResultDto, error) {
+func (s *authService) register(email, password string) (*RegisterResultDto, error) {
 	s.logger.Info("register", "email", email)
 	passwordHash, err := hashPassword(password)
 	if err != nil {
@@ -43,13 +43,13 @@ func (s *authService) register(email, password string) (*registerResultDto, erro
 		return nil, err
 	}
 	s.logger.Debug("register - generated token")
-	return &registerResultDto{
+	return &RegisterResultDto{
 		UserId: user.Id,
 		Tokens: tokenPair,
 	}, nil
 }
 
-func (s *authService) login(email, password string) (*loginResultDto, error) {
+func (s *authService) login(email, password string) (*LoginResultDto, error) {
 	s.logger.Info("login", "email", email)
 	user, err := s.userService.FindUserByEmail(email)
 	if err != nil {
@@ -63,7 +63,7 @@ func (s *authService) login(email, password string) (*loginResultDto, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &loginResultDto{
+	return &LoginResultDto{
 		Tokens: tokenPair,
 	}, nil
 }

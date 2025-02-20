@@ -3,8 +3,8 @@ package auth
 import "github.com/ulshv/go-service/internal/modules/user"
 
 type AuthModule struct {
-	authService  *authService
-	AuthHandlers *authHandlers
+	service  *authService
+	Handlers *authHandlers
 }
 
 func NewAuthModule(
@@ -14,7 +14,7 @@ func NewAuthModule(
 	handlers := newAuthHandlers(service)
 
 	return &AuthModule{
-		authService:  service,
-		AuthHandlers: handlers,
+		service:  service,
+		Handlers: handlers,
 	}
 }

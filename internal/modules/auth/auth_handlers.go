@@ -1,10 +1,11 @@
 package auth
 
 import (
+	"errors"
 	"log/slog"
 	"net/http"
-	"strings"
 
+	"github.com/ulshv/go-service/internal/core/httperrs"
 	"github.com/ulshv/go-service/internal/modules/user"
 	"github.com/ulshv/go-service/pkg/logs"
 	"github.com/ulshv/go-service/pkg/utils/httputils"
@@ -30,7 +31,7 @@ func (h *authHandlers) RegisterHandlers(mux *http.ServeMux) {
 
 func (h *authHandlers) registerHandler(w http.ResponseWriter, r *http.Request) {
 	h.logger.Info("registerHandler")
-	var registerDto registerDto
+	var registerDto RegisterDto
 	err := httputils.DecodeBody(w, r, &registerDto)
 	if err != nil {
 		return
@@ -40,11 +41,13 @@ func (h *authHandlers) registerHandler(w http.ResponseWriter, r *http.Request) {
 	h.logger.Debug("after register", "result", result, "err", err)
 	if err != nil {
 		respStatus := http.StatusInternalServerError
+		errCode := httperrs.ErrCodeUnknown
 		if err == user.ErrEmailTaken {
 			respStatus = http.StatusConflict
+			errCode = httperrs.ErrEmailTaken
 		}
 		slog.Debug("received err, writing to client", "err", "err")
-		httputils.WriteErrorJson(w, err.Error(), respStatus)
+		httputils.WriteErrorJson(w, err, errCode, respStatus)
 		return
 	}
 	h.logger.Debug("writing json response to client", "result", result)
@@ -52,39 +55,23 @@ func (h *authHandlers) registerHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *authHandlers) loginHandler(w http.ResponseWriter, r *http.Request) {
-	var loginDto loginDto
+	var loginDto LoginDto
 	err := httputils.DecodeBody(w, r, &loginDto)
 	if err != nil {
 		return
 	}
 	result, err := h.authService.login(loginDto.Email, loginDto.Password)
 	if err != nil {
-		httputils.WriteErrorJson(w, err.Error(), http.StatusUnauthorized)
+		errCode := httperrs.ErrCodeUnknown
+		if errors.Is(err, errInvalidEmailOrPassword) {
+			errCode = httperrs.ErrInvalidEmailOrPassword
+		}
+		httputils.WriteErrorJson(w, err, errCode, http.StatusUnauthorized)
 		return
 	}
 	httputils.WriteJson(w, result)
 }
 
 func (h *authHandlers) meHandler(w http.ResponseWriter, r *http.Request) {
-	h.logger.Info("meHandler")
-	authHeader := r.Header.Get("Authorization")
-	if !strings.HasPrefix(authHeader, "Bearer ") {
-		httputils.WriteErrorJson(w, "invalid authorization header", http.StatusUnauthorized)
-		return
-	}
-	accessToken := strings.TrimPrefix(authHeader, "Bearer ")
-	h.logger.Debug("meHandler - got access token", "token", accessToken)
-	claims, err := h.authService.jwt.ValidateAccessToken(accessToken)
-	if err != nil {
-		httputils.WriteErrorJson(w, err.Error(), http.StatusUnauthorized)
-		return
-	}
-	h.logger.Debug("meHandler - parsed token", "claims", claims)
-	user, err := h.authService.userService.GetUserById(claims.UserId)
-	if err != nil {
-		httputils.WriteErrorJson(w, "invalid token", http.StatusUnauthorized)
-		return
-	}
-	user.PasswordHash = ""
-	httputils.WriteJson(w, user)
+	w.Write([]byte("not implemented yet."))
 }

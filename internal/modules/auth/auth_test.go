@@ -42,37 +42,37 @@ func initModule() *AuthModule {
 func TestRegister(t *testing.T) {
 	t.Skip()
 	module := initModule()
-	ts := httptest.NewServer(http.HandlerFunc(module.AuthHandlers.registerHandler))
+	ts := httptest.NewServer(http.HandlerFunc(module.Handlers.registerHandler))
 	defer ts.Close()
 
 	tests := []struct {
 		name       string
-		payload    registerDto
+		payload    RegisterDto
 		wantStatus int
 		wantError  string
-		wantResult registerResultDto
+		wantResult RegisterResultDto
 	}{
 		{
 			name: "registers new user",
-			payload: registerDto{
+			payload: RegisterDto{
 				Email:    "test@example.com",
 				Password: "password123",
 			},
 			wantStatus: http.StatusOK,
 			wantError:  "",
-			wantResult: registerResultDto{
+			wantResult: RegisterResultDto{
 				UserId: 1,
 			},
 		},
 		{
 			name: "don't register new user if email is already taken",
-			payload: registerDto{
+			payload: RegisterDto{
 				Email:    "test@example.com",
 				Password: "password123",
 			},
 			wantStatus: http.StatusConflict,
 			wantError:  user.ErrEmailTaken.Error(),
-			wantResult: registerResultDto{},
+			wantResult: RegisterResultDto{},
 		},
 	}
 
@@ -94,11 +94,11 @@ func TestRegister(t *testing.T) {
 			if resp.StatusCode != tt.wantStatus {
 				t.Errorf("got status %d, want %d", resp.StatusCode, tt.wantStatus)
 			}
-			apiErr := testutils.ErrorStringFromBody(respBody)
+			apiErr := testutils.ErrorCodeFromBody(respBody)
 			if apiErr != tt.wantError {
 				t.Errorf("got error %s, want %s", apiErr, tt.wantError)
 			}
-			result := registerResultDto{}
+			result := RegisterResultDto{}
 			err = json.Unmarshal(respBody, &result)
 			if err != nil {
 				t.Fatal(err)
@@ -112,13 +112,13 @@ func TestRegister(t *testing.T) {
 
 func TestMe(t *testing.T) {
 	module := initModule()
-	ts1 := httptest.NewServer(http.HandlerFunc(module.AuthHandlers.registerHandler))
-	ts2 := httptest.NewServer(http.HandlerFunc(module.AuthHandlers.meHandler))
+	ts1 := httptest.NewServer(http.HandlerFunc(module.Handlers.registerHandler))
+	ts2 := httptest.NewServer(http.HandlerFunc(module.Handlers.meHandler))
 	defer ts1.Close()
 	defer ts2.Close()
 
 	t.Run("creates new user and fetches /auth/me using Authorization header", func(t *testing.T) {
-		body, err := json.Marshal(registerDto{
+		body, err := json.Marshal(RegisterDto{
 			Email:    "test@example.com",
 			Password: "password123",
 		})
@@ -129,7 +129,7 @@ func TestMe(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		registerResult := registerResultDto{}
+		registerResult := RegisterResultDto{}
 		err = json.NewDecoder(resp.Body).Decode(&registerResult)
 		if err != nil {
 			t.Fatal(err)

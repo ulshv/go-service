@@ -1,6 +1,7 @@
 package jwtutils
 
 import (
+	"errors"
 	"fmt"
 	"log/slog"
 	"time"
@@ -26,6 +27,11 @@ type TokenPair struct {
 const (
 	AccessToken  TokenType = "access"
 	RefreshToken TokenType = "refresh"
+)
+
+var (
+	ErrTokenExpired = errors.New("token has expired")
+	ErrInvalidToken = errors.New("invalid token")
 )
 
 type Jwt struct {
@@ -133,12 +139,15 @@ func (j *Jwt) validateToken(tokenString string, tokenType TokenType, secret []by
 	})
 
 	if err != nil {
+		if errors.Is(err, jwt_mod.ErrTokenExpired) {
+			return nil, ErrTokenExpired
+		}
 		return nil, fmt.Errorf("failed to parse token: %v", err)
 	}
 
 	claims, ok := token.Claims.(*Claims)
 	if !ok || !token.Valid {
-		return nil, fmt.Errorf("invalid token claims")
+		return nil, ErrInvalidToken
 	}
 
 	// Validate token type

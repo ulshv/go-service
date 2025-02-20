@@ -18,13 +18,13 @@ var queries = struct {
 }{
 	getProducts:    "SELECT * from products LIMIT :limit OFFSET :offset",
 	getProductById: "SELECT * FROM products WHERE id = $1",
-	createProduct: `INSERT INTO products (name, desc, price, created_at, updated_at)
-VALUES (:name, :desc, :price, :created_at, :updated_at)
-RETURNING id, name, desc, price, created_at, updated_at`,
+	createProduct: `INSERT INTO products (user_id, name, desc, price, created_at, updated_at)
+VALUES (:user_id, :name, :desc, :price, :created_at, :updated_at)
+RETURNING id, user_id, name, desc, price, created_at, updated_at`,
 	updateProduct: `UPDATE products
-SET name = :name, desc = :desc, price = :price, updated_at = :updated_at
+SET user_id = :user_id, name = :name, desc = :desc, price = :price, updated_at = :updated_at
 WHERE id = :id
-RETURNING id, name, desc, price, created_at, updated_at`,
+RETURNING id, user_id, name, desc, price, created_at, updated_at`,
 }
 
 func newProductRepo(db *sqlx.DB) *productRepo {

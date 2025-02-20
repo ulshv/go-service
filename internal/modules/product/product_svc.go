@@ -14,11 +14,12 @@ func newProductSvc(repo *productRepo) *productSvc {
 	}
 }
 
-func newProduct(name, desc string, price decimal.Decimal) Product {
+func newProduct(userId int, name, desc string, price decimal.Decimal) Product {
 	return Product{
-		Name:  name,
-		Desc:  desc,
-		Price: price,
+		UserId: userId,
+		Name:   name,
+		Desc:   desc,
+		Price:  price,
 	}
 }
 
