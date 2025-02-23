@@ -12,8 +12,10 @@ import (
 	"github.com/ulshv/go-service/pkg/utils/jwtutils"
 )
 
-var jwt = jwtutils.NewJWT()
-var logger = logs.NewLogger("middlewares")
+var (
+	jwt    = jwtutils.NewJWT()
+	logger = logs.NewLogger("middlewares")
+)
 
 type mwKeyTypes int
 
@@ -45,11 +47,11 @@ func Authenticate(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		logger.Debug("ValidateAccessToken error", "error", err)
 		if errors.Is(err, jwtutils.ErrInvalidToken) {
-			httputils.WriteErrorJson(w, err, httperrs.ErrCodeAccessTokenInvalid, http.StatusUnauthorized)
+			httputils.WriteErrorJSON(w, err, httperrs.ErrCodeAccessTokenInvalid, http.StatusUnauthorized)
 			setAuthErr(r)
 		}
 		if errors.Is(err, jwtutils.ErrTokenExpired) {
-			httputils.WriteErrorJson(w, err, httperrs.ErrCodeAccessTokenExpired, http.StatusUnauthorized)
+			httputils.WriteErrorJSON(w, err, httperrs.ErrCodeAccessTokenExpired, http.StatusUnauthorized)
 			setAuthErr(r)
 		}
 		// allow passing the MW if JWT cannot be parsed, if auth is needed - it will be catched with `AuthRequired` MW
@@ -66,7 +68,7 @@ func AuthRequired(w http.ResponseWriter, r *http.Request) {
 	_, ok := GetUserId(r)
 	if !ok {
 		setAuthErr(r)
-		httputils.WriteErrorJson(w, httperrs.ErrUnauthorized, httperrs.ErrCodeUnautorized, http.StatusUnauthorized)
+		httputils.WriteErrorJSON(w, httperrs.ErrUnauthorized, httperrs.ErrCodeUnautorized, http.StatusUnauthorized)
 	}
 }
 

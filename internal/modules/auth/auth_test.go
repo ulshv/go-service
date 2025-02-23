@@ -17,7 +17,7 @@ import (
 	"github.com/ulshv/go-service/pkg/utils/testutils"
 )
 
-func initDb() *sqlx.DB {
+func initDB() *sqlx.DB {
 	os.Remove("./test.db")
 	cfg := database.Config{
 		Type:   database.SQLite,
@@ -32,7 +32,7 @@ func initDb() *sqlx.DB {
 }
 
 func initModule() *AuthModule {
-	db := initDb()
+	db := initDB()
 	migrations.RunMigrations(db, database.SQLite)
 	userModule := user.NewUserModule(db)
 	authModule := NewAuthModule(userModule)
@@ -61,7 +61,7 @@ func TestRegister(t *testing.T) {
 			wantStatus: http.StatusOK,
 			wantError:  "",
 			wantResult: RegisterResultDto{
-				UserId: 1,
+				UserID: 1,
 			},
 		},
 		{
@@ -103,7 +103,7 @@ func TestRegister(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			if tt.wantResult.UserId != 0 && result.UserId != tt.wantResult.UserId {
+			if tt.wantResult.UserID != 0 && result.UserID != tt.wantResult.UserID {
 				t.Errorf("got UserId %+v, want %+v", result, tt.wantResult)
 			}
 		})
@@ -152,8 +152,8 @@ func TestMe(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		if meData.Id != registerResult.UserId {
-			t.Errorf("got UserId %d, want %d", meData.Id, registerResult.UserId)
+		if meData.ID != registerResult.UserID {
+			t.Errorf("got UserId %d, want %d", meData.ID, registerResult.UserID)
 		}
 		if meData.Email != "test@example.com" {
 			t.Errorf("got Email %s, want %s", meData.Email, "test@example.com")

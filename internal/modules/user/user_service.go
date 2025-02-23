@@ -21,8 +21,8 @@ func NewUserService(db *sqlx.DB) *UserService {
 	}
 }
 
-func (s *UserService) GetUserById(id int) (*User, error) {
-	return s.userRepository.getUserById(id)
+func (s *UserService) GetUserByID(id int) (*User, error) {
+	return s.userRepository.getUserByID(id)
 }
 
 func (s *UserService) FindUserByEmail(username string) (*User, error) {

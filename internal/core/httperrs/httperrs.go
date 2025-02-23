@@ -4,7 +4,7 @@ import "errors"
 
 const (
 	// JSON
-	ErrCodeMalformedJson = "ERR_MALFORMED_JSON"
+	ErrCodeMalformedJSON = "ERR_MALFORMED_JSON"
 	// JWT
 	ErrCodeAccessTokenExpired  = "ERR_ACCESS_TOKEN_EXPIRED"
 	ErrCodeAccessTokenInvalid  = "ERR_ACCESS_TOKEN_INVALID"
@@ -19,6 +19,4 @@ const (
 	ErrCodeInvalidEmailOrPassword = "ERR_INVALID_EMAIL_OR_PASSWORD"
 )
 
-var (
-	ErrUnauthorized = errors.New("unauthorized")
-)
+var ErrUnauthorized = errors.New("unauthorized")

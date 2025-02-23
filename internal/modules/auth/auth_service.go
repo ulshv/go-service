@@ -38,13 +38,13 @@ func (s *authService) register(email, password string) (*RegisterResultDto, erro
 		return nil, err
 	}
 	s.logger.Debug("register - now generate toekn")
-	tokenPair, err := s.jwt.GenerateTokenPair(user.Id)
+	tokenPair, err := s.jwt.GenerateTokenPair(user.ID)
 	if err != nil {
 		return nil, err
 	}
 	s.logger.Debug("register - generated token")
 	return &RegisterResultDto{
-		UserId: user.Id,
+		UserID: user.ID,
 		Tokens: tokenPair,
 	}, nil
 }
@@ -59,7 +59,7 @@ func (s *authService) login(email, password string) (*LoginResultDto, error) {
 		s.logger.Debug("login - invalid email or password")
 		return nil, errInvalidEmailOrPassword
 	}
-	tokenPair, err := s.jwt.GenerateTokenPair(user.Id)
+	tokenPair, err := s.jwt.GenerateTokenPair(user.ID)
 	if err != nil {
 		return nil, err
 	}

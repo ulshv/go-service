@@ -14,9 +14,9 @@ func newProductSvc(repo *productRepo) *productSvc {
 	}
 }
 
-func newProduct(userId int, name, desc string, price decimal.Decimal) Product {
+func newProduct(userID int, name, desc string, price decimal.Decimal) Product {
 	return Product{
-		UserId: userId,
+		UserID: userID,
 		Name:   name,
 		Desc:   desc,
 		Price:  price,
@@ -27,8 +27,8 @@ func (s *productSvc) getProducts(offset, limit int) ([]Product, error) {
 	return s.repo.list(offset, limit)
 }
 
-func (s *productSvc) getProductById(id int) (Product, error) {
-	return s.repo.getById(id)
+func (s *productSvc) getProductByID(id int) (Product, error) {
+	return s.repo.getByID(id)
 }
 
 func (s *productSvc) createProduct(p Product) (Product, error) {

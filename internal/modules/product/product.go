@@ -9,7 +9,7 @@ import (
 
 type Product struct {
 	ID        string          `json:"id" db:"id"`
-	UserId    int             `json:"user_id" db:"user_id"`
+	UserID    int             `json:"user_id" db:"user_id"`
 	Name      string          `json:"name" db:"name"`
 	Desc      string          `json:"desc" db:"desc"`
 	Price     decimal.Decimal `json:"price" db:"price"`

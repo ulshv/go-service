@@ -6,9 +6,7 @@ import (
 	"github.com/ulshv/go-service/pkg/utils/jwtutils"
 )
 
-var (
-	errInvalidEmailOrPassword = errors.New("invalid email or password")
-)
+var errInvalidEmailOrPassword = errors.New("invalid email or password")
 
 type RegisterDto struct {
 	Email    string `json:"email"`
@@ -16,7 +14,7 @@ type RegisterDto struct {
 }
 
 type RegisterResultDto struct {
-	UserId int                `json:"user_id"`
+	UserID int                `json:"user_id"`
 	Tokens jwtutils.TokenPair `json:"tokens"`
 }
 

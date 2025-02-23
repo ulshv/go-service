@@ -47,11 +47,11 @@ func (h *authHandlers) registerHandler(w http.ResponseWriter, r *http.Request) {
 			errCode = httperrs.ErrCodeEmailTaken
 		}
 		slog.Debug("received err, writing to client", "err", "err")
-		httputils.WriteErrorJson(w, err, errCode, respStatus)
+		httputils.WriteErrorJSON(w, err, errCode, respStatus)
 		return
 	}
 	h.logger.Debug("writing json response to client", "result", result)
-	httputils.WriteJson(w, result)
+	httputils.WriteJSON(w, result)
 }
 
 func (h *authHandlers) loginHandler(w http.ResponseWriter, r *http.Request) {
@@ -66,10 +66,10 @@ func (h *authHandlers) loginHandler(w http.ResponseWriter, r *http.Request) {
 		if errors.Is(err, errInvalidEmailOrPassword) {
 			errCode = httperrs.ErrCodeInvalidEmailOrPassword
 		}
-		httputils.WriteErrorJson(w, err, errCode, http.StatusUnauthorized)
+		httputils.WriteErrorJSON(w, err, errCode, http.StatusUnauthorized)
 		return
 	}
-	httputils.WriteJson(w, result)
+	httputils.WriteJSON(w, result)
 }
 
 func (h *authHandlers) meHandler(w http.ResponseWriter, r *http.Request) {

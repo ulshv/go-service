@@ -12,12 +12,12 @@ type productRepo struct {
 
 var queries = struct {
 	getProducts    string
-	getProductById string
+	getProductByID string
 	createProduct  string
 	updateProduct  string
 }{
 	getProducts:    "SELECT * from products LIMIT :limit OFFSET :offset",
-	getProductById: "SELECT * FROM products WHERE id = $1",
+	getProductByID: "SELECT * FROM products WHERE id = $1",
 	createProduct: `INSERT INTO products (user_id, name, desc, price, created_at, updated_at)
 VALUES (:user_id, :name, :desc, :price, :created_at, :updated_at)
 RETURNING id, user_id, name, desc, price, created_at, updated_at`,
@@ -42,9 +42,9 @@ func (r *productRepo) list(offset, limit int) ([]Product, error) {
 	return p, nil
 }
 
-func (r *productRepo) getById(id int) (Product, error) {
+func (r *productRepo) getByID(id int) (Product, error) {
 	var p Product
-	err := r.db.Get(&p, queries.getProductById, id)
+	err := r.db.Get(&p, queries.getProductByID, id)
 	if err != nil {
 		return Product{}, err
 	}

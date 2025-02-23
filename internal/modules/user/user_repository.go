@@ -19,7 +19,7 @@ func newUserRepository(db *sqlx.DB) *userRepository {
 	}
 }
 
-func (r *userRepository) getUserById(id int) (*User, error) {
+func (r *userRepository) getUserByID(id int) (*User, error) {
 	var user User
 	err := r.db.Get(&user, "SELECT * FROM users WHERE id = $1", id)
 	if err != nil {
@@ -52,7 +52,6 @@ func (r *userRepository) createUser(user User) (*User, error) {
 		user.Email,
 		user.PasswordHash,
 	).StructScan(&user)
-
 	if err != nil {
 		r.logger.Error("failed to create user", "error", err)
 		return nil, err

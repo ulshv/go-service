@@ -20,7 +20,7 @@ import (
 	"github.com/ulshv/go-service/pkg/utils/testutils"
 )
 
-func initDb() *sqlx.DB {
+func initDB() *sqlx.DB {
 	os.Remove("./test.db")
 	cfg := database.Config{
 		Type:   database.SQLite,
@@ -40,7 +40,7 @@ type initModulesResult struct {
 }
 
 func initModules() initModulesResult {
-	db := initDb()
+	db := initDB()
 	migrations.RunMigrations(db, database.SQLite)
 	userModule := user.NewUserModule(db)
 	authModule := auth.NewAuthModule(userModule)
@@ -62,10 +62,10 @@ func TestCreateAndGetProduct(t *testing.T) {
 		tests := []struct {
 			name                    string
 			registerDto             auth.RegisterDto
-			registerApiErrCode      string
-			registerUserId          int
+			registerAPIErrCode      string
+			registerUserID          int
 			createProductDto        createProductDto
-			createProductApiErrCode string
+			createProductAPIErrCode string
 		}{
 			{
 				name: "create a new user and create a product",
@@ -73,8 +73,8 @@ func TestCreateAndGetProduct(t *testing.T) {
 					Email:    "test1@example.com",
 					Password: "pass",
 				},
-				registerApiErrCode: "",
-				registerUserId:     1,
+				registerAPIErrCode: "",
+				registerUserID:     1,
 				createProductDto: createProductDto{
 					Name:  "first product",
 					Desc:  "lorem ipsum something amenit...",
@@ -87,8 +87,8 @@ func TestCreateAndGetProduct(t *testing.T) {
 					Email:    "test2@example.com",
 					Password: "pass",
 				},
-				registerApiErrCode: "",
-				registerUserId:     2,
+				registerAPIErrCode: "",
+				registerUserID:     2,
 				createProductDto: createProductDto{
 					Name:  "secodn product",
 					Desc:  "just ipsum amenit",
@@ -101,8 +101,8 @@ func TestCreateAndGetProduct(t *testing.T) {
 					Email:    "test2@example.com",
 					Password: "pass",
 				},
-				registerApiErrCode: httperrs.ErrCodeEmailTaken,
-				registerUserId:     0,
+				registerAPIErrCode: httperrs.ErrCodeEmailTaken,
+				registerUserID:     0,
 				createProductDto: createProductDto{
 					Name:  "secodn product",
 					Desc:  "just ipsum amenit",
@@ -117,8 +117,8 @@ func TestCreateAndGetProduct(t *testing.T) {
 				if err != nil {
 					t.Fatal(err)
 				}
-				registerUrl := fmt.Sprintf("%s/api/v1/auth/register", srv.URL)
-				registerResp, err := http.Post(registerUrl, "application/json", bytes.NewBuffer(registerBody))
+				registerURL := fmt.Sprintf("%s/api/v1/auth/register", srv.URL)
+				registerResp, err := http.Post(registerURL, "application/json", bytes.NewBuffer(registerBody))
 				if err != nil {
 					t.Fatal(err)
 				}
@@ -127,11 +127,11 @@ func TestCreateAndGetProduct(t *testing.T) {
 					t.Fatal(err)
 				}
 				defer registerResp.Body.Close()
-				registerApiErrCode := testutils.ErrorCodeFromBody(registerRespBody)
-				fmt.Println("registerApiErrCode", registerApiErrCode)
-				if tt.registerApiErrCode != "" {
-					if registerApiErrCode != tt.registerApiErrCode {
-						t.Fatalf("got register error code '%s', want '%s'", registerApiErrCode, tt.registerApiErrCode)
+				registerAPIErrCode := testutils.ErrorCodeFromBody(registerRespBody)
+				fmt.Println("registerApiErrCode", registerAPIErrCode)
+				if tt.registerAPIErrCode != "" {
+					if registerAPIErrCode != tt.registerAPIErrCode {
+						t.Fatalf("got register error code '%s', want '%s'", registerAPIErrCode, tt.registerAPIErrCode)
 					}
 					return
 				}
@@ -140,15 +140,15 @@ func TestCreateAndGetProduct(t *testing.T) {
 				if err != nil {
 					t.Fatal(err)
 				}
-				if registerResult.UserId != tt.registerUserId {
-					t.Fatalf("got register userId %v, want %v", registerResult.UserId, tt.registerUserId)
+				if registerResult.UserID != tt.registerUserID {
+					t.Fatalf("got register userId %v, want %v", registerResult.UserID, tt.registerUserID)
 				}
 				createBody, err := json.Marshal(tt.createProductDto)
 				if err != nil {
 					t.Fatal(err)
 				}
-				createUrl := fmt.Sprintf("%s/api/v1/products", srv.URL)
-				req, err := http.NewRequest("POST", createUrl, bytes.NewBuffer(createBody))
+				createURL := fmt.Sprintf("%s/api/v1/products", srv.URL)
+				req, err := http.NewRequest("POST", createURL, bytes.NewBuffer(createBody))
 				if err != nil {
 					t.Fatal(err)
 				}
@@ -166,9 +166,9 @@ func TestCreateAndGetProduct(t *testing.T) {
 					t.Fatal(err)
 				}
 				defer createResp.Body.Close()
-				createProductApiErrCode := testutils.ErrorCodeFromBody(createRespBody)
-				if createProductApiErrCode != tt.createProductApiErrCode {
-					t.Fatalf("got create product api error code '%s', want '%s'", createProductApiErrCode, tt.createProductApiErrCode)
+				createProductAPIErrCode := testutils.ErrorCodeFromBody(createRespBody)
+				if createProductAPIErrCode != tt.createProductAPIErrCode {
+					t.Fatalf("got create product api error code '%s', want '%s'", createProductAPIErrCode, tt.createProductAPIErrCode)
 				}
 				createResult := Product{}
 				err = json.Unmarshal(createRespBody, &createResult)
@@ -176,8 +176,8 @@ func TestCreateAndGetProduct(t *testing.T) {
 					t.Fatal(err)
 				}
 				fmt.Println("createResult:", createResult)
-				if createResult.UserId != registerResult.UserId {
-					t.Fatalf("got userId %v, want %v", createResult.UserId, registerResult.UserId)
+				if createResult.UserID != registerResult.UserID {
+					t.Fatalf("got userId %v, want %v", createResult.UserID, registerResult.UserID)
 				}
 				if createResult.Name != tt.createProductDto.Name ||
 					createResult.Desc != tt.createProductDto.Desc ||
